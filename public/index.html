@@ -26,7 +26,7 @@ body{font-family:"Space Grotesk",system-ui,sans-serif;background:#0E1013;color:v
 
 /* login */
 .login{position:absolute;inset:0;background:var(--bg);z-index:20;display:flex;flex-direction:column;
-  justify-content:center;padding:32px 26px;transition:opacity .34s var(--ez),transform .34s var(--ez);}
+  justify-content:center;padding:30px 24px;overflow-y:auto;transition:opacity .34s var(--ez),transform .34s var(--ez);}
 .login[data-out="1"]{opacity:0;transform:scale(1.03);pointer-events:none;}
 .crest{width:46px;height:46px;border-radius:13px;background:var(--am);color:var(--onam);display:flex;
   align-items:center;justify-content:center;font-size:16px;font-weight:700;letter-spacing:-.02em;}
@@ -48,6 +48,14 @@ body{font-family:"Space Grotesk",system-ui,sans-serif;background:#0E1013;color:v
 .lswap button{background:none;border:none;font:inherit;font-weight:600;color:var(--am);cursor:pointer;}
 .lback{background:none;border:none;color:var(--mu);font:inherit;font-size:13px;cursor:pointer;padding:4px 0;}
 .otp{display:flex;gap:7px;}
+.feat{margin:20px 0 4px;}
+.feat .f{display:flex;gap:12px;align-items:center;padding:9px 0;}
+.feat .f i{width:32px;height:32px;border-radius:9px;background:var(--sf2);flex:none;display:flex;
+  align-items:center;justify-content:center;}
+.feat .f svg{width:16px;height:16px;stroke:var(--am);fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;}
+.feat .f .ft{font-size:13px;font-weight:500;line-height:1.35;}
+.feat .f .fs{display:block;font-size:11.5px;color:var(--dim);font-weight:400;margin-top:2px;}
+.lrule{border-top:1px solid var(--line);margin:6px 0 16px;}
 .otp input{flex:1;text-align:center;font-family:"IBM Plex Mono",monospace;font-size:18px;font-weight:600;
   padding:12px 0;border-radius:10px;color:var(--tx);background:var(--sf);border:1px solid var(--line);}
 
@@ -860,12 +868,21 @@ function draw(){
 let LM="signin";
 function drawLogin(){
   const b=el("lbody");
-  if(LM==="signin")b.innerHTML=`<h1>H14</h1>
-    <div class="tag">Mess, cleaning and hall services for Hall 14, in one place.</div>
-    <div class="lform"><div class="lf"><label for="lr">Roll number</label>
-      <input class="m" id="lr" value="261110071"></div>
-      <div class="lf"><label for="lp">Password</label><input type="password" id="lp" value="••••••••"></div>
-      <button class="lbtn" data-in="1">Sign in</button></div>
+  if(LM==="signin")b.innerHTML=`<h1 style="margin-top:16px;font-size:24px">Everything the hall runs on</h1>
+    <div class="feat">
+      <div class="f"><i><svg viewBox="0 0 24 24"><path d="M3 8h18v3a2 2 0 000 4v3H3v-3a2 2 0 000-4V8z"/></svg></i>
+        <div class="ft">Reserve a special item<span class="fs">Skip the queue with a QR token</span></div></div>
+      <div class="f"><i><svg viewBox="0 0 24 24"><path d="M8 3h8l1 6H7zM12 9v12M9 21h6"/></svg></i>
+        <div class="ft">Book room cleaning<span class="fs">Pick a 15-minute slot that suits you</span></div></div>
+      <div class="f"><i><svg viewBox="0 0 24 24"><path d="M5 20V10M12 20V4M19 20v-7"/></svg></i>
+        <div class="ft">Vote the weekly menu<span class="fs">One dish for every meal, every day</span></div></div>
+      <div class="f"><i><svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm0 5v5m0 3.5v.5"/></svg></i>
+        <div class="ft">Track a complaint<span class="fs">Reference number, deadline, status</span></div></div>
+    </div>
+    <div class="lrule"></div>
+    <div class="lf"><label for="lr">Roll number</label><input class="m" id="lr" value="261110071"></div>
+    <div class="lf"><label for="lp">Password</label><input type="password" id="lp" value="••••••••"></div>
+    <button class="lbtn" data-in="1">Sign in</button>
     <div class="lswap">First time here? <button data-lm="reg">Create an account</button></div>
     <div class="lnote">Signs in with your institute roll number. Nothing is shared with the mess or the Hall Office.</div>`;
   else if(LM==="reg")b.innerHTML=`<button class="lback" data-lm="signin">← Back to sign in</button>
