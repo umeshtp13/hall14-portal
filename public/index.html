@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Hall 14 Portal</title>
+<title>H14 — Hall 14 Portal</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -261,15 +261,15 @@ textarea{resize:none;height:70px;line-height:1.45;}
 </head>
 <body>
 <div class="intro">
-  <h1>Hall 14 Portal</h1>
-  <p>Working prototype. Book room cleaning, reserve a special item and get a single-use QR token, vote on the menu, suggest a dish, and file maintenance or cleanliness complaints.</p>
+  <h1>H14</h1>
+  <p>The Hall 14 portal. Working prototype. Book room cleaning, reserve a special item and get a single-use QR token, vote on the menu, suggest a dish, and file maintenance or cleanliness complaints.</p>
 </div>
 
 <div class="phone">
   <div class="login" id="login" data-out="0"><div class="crest">H14</div><div id="lbody"></div></div>
   <div class="top">
     <button class="burger" id="burger" aria-label="Menu"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
-    <div><div class="hall">Hall 14</div><div class="who"><span>Umesh Tupdale</span><span class="r">261110071</span></div></div>
+    <div><div class="hall">H14</div><div class="who"><span>Umesh Tupdale</span><span class="r">261110071</span></div></div>
     <button class="av" id="avatar" aria-label="Profile">UT</button>
   </div>
   <div class="screen" id="screen"></div>
@@ -462,16 +462,24 @@ const SPECIALS=[
  {id:3,name:"Paneer tikka",when:"Friday dinner",price:50,shut:false},
  {id:4,name:"Egg biryani",when:"Sunday lunch",price:45,shut:true}];
 
-const MEALS=[
- {k:"breakfast",label:"Breakfast",items:[
-   {id:1,label:"Aloo paratha with curd",n:171},{id:2,label:"Idli sambar",n:143},
-   {id:3,label:"Bread omelette",n:118},{id:4,label:"Poha with sev",n:96}]},
- {k:"lunch",label:"Lunch",items:[
-   {id:1,label:"Chole bhature",n:184},{id:2,label:"Rajma chawal",n:158},
-   {id:3,label:"Kadhi chawal",n:104},{id:4,label:"Paneer butter masala",n:167}]},
- {k:"dinner",label:"Dinner",items:[
-   {id:1,label:"Veg biryani with raita",n:162},{id:2,label:"Masala dosa",n:126},
-   {id:3,label:"Dal makhani with naan",n:149},{id:4,label:"Egg curry",n:141}]}];
+const DAYS7=[{k:"mon",s:"Mon",l:"Monday"},{k:"tue",s:"Tue",l:"Tuesday"},{k:"wed",s:"Wed",l:"Wednesday"},
+ {k:"thu",s:"Thu",l:"Thursday"},{k:"fri",s:"Fri",l:"Friday"},{k:"sat",s:"Sat",l:"Saturday"},
+ {k:"sun",s:"Sun",l:"Sunday"}];
+const MEALK=[["breakfast","Breakfast"],["lunch","Lunch"],["dinner","Dinner"]];
+const OPTS={
+ breakfast:[{id:1,label:"Aloo paratha with curd"},{id:2,label:"Idli sambar"},
+            {id:3,label:"Bread omelette"},{id:4,label:"Poha with sev"}],
+ lunch:[{id:1,label:"Chole bhature"},{id:2,label:"Rajma chawal"},
+        {id:3,label:"Kadhi chawal"},{id:4,label:"Paneer butter masala"}],
+ dinner:[{id:1,label:"Veg biryani with raita"},{id:2,label:"Masala dosa"},
+         {id:3,label:"Dal makhani with naan"},{id:4,label:"Egg curry"}]};
+
+// seeded starting counts so each day looks genuinely different
+const VOTES=(()=>{let h=97,V={};
+ const nx=()=>{h=(h*1103515245+12345)>>>0;return (h>>>16)%90+40;};
+ DAYS7.forEach(d=>{V[d.k]={};MEALK.forEach(([m])=>{V[d.k][m]={};
+   OPTS[m].forEach(o=>{V[d.k][m][o.id]=nx();});});});
+ return V;})();
 
 const CRIT=[["quality","Food quality","Taste and freshness"],
  ["quantity","Quantity","Enough served, and till closing"],
@@ -502,7 +510,8 @@ const hhmm=m=>String(Math.floor(m/60)).padStart(2,"0")+":"+String(m%60).padStart
 const TAKEN={4:[540,555,600,930,945],5:[510,525,975],6:[600,615,630,1020],7:[510,900],8:[555,570,585],9:[915,930],10:[510,525,540]};
 
 const S={tab:"menu",drawer:false,menuTab:"today",pollTab:"vote",compTab:"maint",
-  picked:{breakfast:null,lunch:null,dinner:null},
+  pollDay:"mon",pollSubmitted:false,editing:false,applied:null,picked:(()=>{const p={};["mon","tue","wed","thu","fri","sat","sun"]
+    .forEach(d=>p[d]={breakfast:null,lunch:null,dinner:null});return p;})(),
   chosen:null,qty:1,booked:null,
   fb:{given:{},submitted:false},pollClosed:false,responses:214,
   avg:{quality:3.1,quantity:3.6,hygiene:2.7,variety:2.9},
@@ -515,7 +524,7 @@ const S={tab:"menu",drawer:false,menuTab:"today",pollTab:"vote",compTab:"maint",
     {ref:"H14-M0327",txt:"Tube light not working, corridor 4th floor",desk:"Electrical",days:2,st:"p",due:"4 Sep",img:null}],
    clean:[
     {ref:"H14-C0118",txt:"Washroom drain choked, C-block 4th floor",desk:"Housekeeping",days:1,st:"p",due:"3 Sep",img:null}]},
-  seq:{maint:332,clean:119},filed:null,shot:null,
+  seq:{maint:332,clean:119},filed:null,shot:null,countedMe:false,
   openNotice:1,readIds:[]};
 
 const el=id=>document.getElementById(id);
@@ -540,7 +549,8 @@ function qrSVG(t,px){const m=QR.encode(t,"M"),n=m.length,q=4,sz=n+2*q;let d="";
   for(let r=0;r<n;r++)for(let c=0;c<n;c++)if(m[r][c])d+=`M${c+q} ${r+q}h1v1h-1z`;
   return `<svg viewBox="0 0 ${sz} ${sz}" width="${px}" height="${px}" shape-rendering="crispEdges" role="img" aria-label="Collection QR"><rect width="${sz}" height="${sz}" fill="#fff"/><path d="${d}" fill="#16181D"/></svg>`;}
 const payload=t=>["H14",t.roll,t.code,t.item,t.qty,"2026-09-03"].join("|");
-const voted=()=>MEALS.filter(m=>S.picked[m.k]).length;
+const dayDone=d=>MEALK.every(([m])=>S.picked[d][m]);
+const votedTotal=()=>DAYS7.reduce((a,d)=>a+MEALK.filter(([m])=>S.picked[d.k][m]).length,0);
 const spBtn=s=>`<button class="pk" data-pick="${s.id}" ${s.shut?"disabled":""}>
   <div class="r1"><span class="t1">${esc(s.name)}</span><span class="p1">&#8377;${s.price}</span></div>
   <div class="r2"><span class="s1">${esc(s.when)}</span><span class="s2">${s.shut?"Closed":"Closes 9 pm"}</span></div></button>`;
@@ -584,25 +594,68 @@ function mSuggest(){
 /* ---------- POLL ---------- */
 function poll(){
   return `<div class="page"><h2>Monthly mess poll</h2>
-    <p class="sub">Open for 7 days · closes 8 September, 11:59 pm</p><div class="gap"></div>
+    <p class="sub">Vote the dish for every meal, every day of the week. Open 7 days · closes 8 September</p><div class="gap"></div>
     <div class="seg">${[["vote","Menu vote"],["fb","Feedback"],["res","Results"]]
       .map(([k,l])=>`<button data-ptab="${k}" data-on="${S.pollTab===k?1:0}">${l}</button>`).join("")}</div>
     ${({vote:pVote,fb:pFb,res:pRes})[S.pollTab]()}</div>`;
 }
-function pVote(){
-  const n=voted();
-  const head=n===3
-   ?`<div class="ok"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
-      <div><div class="t">All three votes recorded</div>
-      <div class="d">One dish each for breakfast, lunch and dinner. Change them any time in the next 7 days.</div></div></div>`
-   :`<div class="info">Pick one dish for each meal. <b style="color:var(--am)">${n} of 3 recorded.</b> Voting stays open for 7 days so everyone gets a turn.</div>`;
-  return head+MEALS.map(m=>{
-    const top=Math.max(...m.items.map(i=>i.n)),done=!!S.picked[m.k];
-    return `<div class="mh"><b>${m.label}</b><span data-done="${done?1:0}">${done?"Voted":"Not voted"}</span></div>
-      ${m.items.map(i=>`<button class="pk" data-meal="${m.k}" data-vote="${i.id}" data-on="${S.picked[m.k]===i.id?1:0}">
-        <div class="r1"><span class="t1">${esc(i.label)}</span><span class="cnt">${i.n}</span></div>
-        <div class="bar"><i style="width:${Math.round(i.n/top*100)}%"></i></div></button>`).join("")}`;}).join("");
+function submitPoll(){
+  if(S.applied) DAYS7.forEach(d=>MEALK.forEach(([m])=>{
+    const prev=S.applied[d.k][m]; if(prev) VOTES[d.k][m][prev]--;}));
+  DAYS7.forEach(d=>MEALK.forEach(([m])=>{VOTES[d.k][m][S.picked[d.k][m]]++;}));
+  S.applied=JSON.parse(JSON.stringify(S.picked));
+  S.pollSubmitted=true; S.editing=false;
+  if(!S.countedMe){S.responses++;S.countedMe=true;}
 }
+
+function pVote(){
+  /* ---- submitted summary ---- */
+  if(S.pollSubmitted && !S.editing){
+    return `<div class="ok"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+      <div><div class="t">Your vote is submitted</div>
+      <div class="d">All 21 choices counted. You can change them until voting closes on 8 September.</div></div></div>
+    <div class="secline"><b>What you voted for</b><i></i></div>
+    ${DAYS7.map(d=>`<div class="card"><div class="nm" style="color:var(--am)">${d.l}</div>
+      ${MEALK.map(([m,label])=>`<div class="r1" style="margin-top:6px">
+        <span class="food" style="margin:0">${label}</span>
+        <span style="font-size:12.5px;font-weight:600;text-align:right">
+        ${esc(OPTS[m].find(o=>o.id===S.picked[d.k][m]).label)}</span></div>`).join("")}
+      </div>`).join("")}
+    <div class="gap"></div>
+    <button class="btn ghost" data-edit="1">Change my votes</button>`;
+  }
+
+  /* ---- voting ---- */
+  const dk=S.pollDay, day=DAYS7.find(d=>d.k===dk), n=votedTotal(), full=n===21;
+  const head=full
+   ?`<div class="ok"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+      <div><div class="t">All 21 picked</div>
+      <div class="d">Nothing is counted until you submit. Scroll down and submit your week.</div></div></div>`
+   :`<div class="info">Pick a dish for each meal, for each day.
+      <b style="color:var(--am)">${n} of 21 chosen.</b> Nothing is counted until you submit.</div>`;
+  const tabs=`<div class="days" style="margin-bottom:13px">${DAYS7.map(d=>{
+    const done=dayDone(d.k), cnt=MEALK.filter(([m])=>S.picked[d.k][m]).length;
+    return `<button class="day" data-pday="${d.k}" data-on="${dk===d.k?1:0}">
+      ${d.s}<b style="font-size:11px;margin-top:3px;${done?"color:var(--gr)":""}">
+      ${done?"&#10003;":cnt+"/3"}</b></button>`;}).join("")}</div>`;
+  const body=MEALK.map(([m,label])=>{
+    const list=OPTS[m], counts=VOTES[dk][m];
+    const top=Math.max(...list.map(o=>counts[o.id]));
+    const done=!!S.picked[dk][m];
+    return `<div class="mh"><b>${label}</b>
+      <span data-done="${done?1:0}">${done?"Chosen":"Not chosen"}</span></div>
+      ${list.map(o=>`<button class="pk" data-pd="${dk}" data-meal="${m}" data-vote="${o.id}"
+        data-on="${S.picked[dk][m]===o.id?1:0}">
+        <div class="r1"><span class="t1">${esc(o.label)}</span><span class="cnt">${counts[o.id]}</span></div>
+        <div class="bar"><i style="width:${Math.round(counts[o.id]/top*100)}%"></i></div></button>`).join("")}`;
+  }).join("");
+  const foot=`<div class="gap"></div>
+    <button class="btn" data-submit="1" ${full?"":"disabled"}>
+      ${full?"Submit my week":"Pick all 21 to submit ("+n+"/21)"}</button>
+    ${S.pollSubmitted?'<button class="btn ghost" data-cancedit="1">Cancel, keep my old votes</button>':""}`;
+  return head+tabs+`<div class="secline"><b>${day.l}</b><i></i></div>`+body+foot;
+}
+
 function pFb(){
   if(S.fb.submitted)return `<div class="ok"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
     <div><div class="t">Feedback recorded</div><div class="d">Averages stay sealed until the poll closes, so early ratings cannot sway later ones.</div></div></div>
@@ -624,18 +677,20 @@ function pRes(){
       <div class="slot" style="cursor:default">08m</div></div></div>
     <p class="sub">${S.responses} of 1033 residents have voted so far.</p><div class="gap"></div>
     <button class="btn ghost sm" data-close="1">Preview published result (demo)</button>`;
-  return MEALS.map(m=>{
-    const s=[...m.items].sort((a,b)=>b.n-a.n),w=s[0],tot=m.items.reduce((a,b)=>a+b.n,0);
-    return `<div class="secline"><b>${m.label}</b><i></i></div>
-      <div class="card" style="border-color:var(--am)"><div class="food" style="color:var(--am);font-weight:600">Added to the menu</div>
-      <div class="nm" style="font-size:16px;margin-top:2px">${esc(w.label)}</div>
-      <div class="food">${w.n} of ${tot} votes</div></div>
-      ${s.slice(1).map(i=>`<div class="card"><div class="r1"><span class="nm">${esc(i.label)}</span>
-        <span class="cnt">${i.n}</span></div><div class="bar"><i style="width:${Math.round(i.n/w.n*100)}%"></i></div></div>`).join("")}`;
-  }).join("")+`<div class="secline"><b>Mess feedback</b><i></i></div>
+  const win=(d,m)=>{const c=VOTES[d][m];
+    return OPTS[m].reduce((a,b)=>c[b.id]>c[a.id]?b:a);};
+  return `<div class="info">This is the weekly menu the hall voted for. It goes to the contractor as the rotation for next month.</div>
+  ${DAYS7.map(d=>`<div class="card">
+    <div class="nm" style="color:var(--am)">${d.l}</div>
+    ${MEALK.map(([m,label])=>`<div class="r1" style="margin-top:7px">
+      <span class="food" style="margin:0">${label}</span>
+      <span style="font-size:12.5px;font-weight:600;text-align:right">${esc(win(d.k,m).label)}</span>
+    </div>`).join("")}</div>`).join("")}
+  <div class="secline"><b>Mess feedback</b><i></i></div>
   ${CRIT.map(([k,nm])=>`<div class="card"><div class="r1"><span class="nm">${nm}</span>
     <span class="p1">${S.avg[k].toFixed(1)}</span></div>
     <div class="bar"><i style="width:${S.avg[k]/5*100}%"></i></div></div>`).join("")}
+  <p class="sub">Final: ${S.responses} of 1033 residents responded.</p>
   <div class="gap"></div><button class="btn ghost sm" data-reopen="1">Back to open poll (demo)</button>`;
 }
 
@@ -734,7 +789,7 @@ function me(){
   return `<div class="page">
   <div class="ph"><div class="pav">UT</div><div><div class="n2">${esc(ME.name)}</div>
     <div class="r2">${esc(ME.roll)}</div></div></div>
-  <div class="quota"><div><b>${voted()}/3</b><span>menu votes</span></div>
+  <div class="quota"><div><b>${S.pollSubmitted?"21/21":votedTotal()+"/21"}</b><span>menu votes</span></div>
     <div><b>${S.bookings.length}/2</b><span>cleaning booked</span></div>
     <div><b>${open}</b><span>open issues</span></div></div>
   <div class="secline"><b>Hall</b><i></i></div>
@@ -805,8 +860,8 @@ function draw(){
 let LM="signin";
 function drawLogin(){
   const b=el("lbody");
-  if(LM==="signin")b.innerHTML=`<h1>Hall 14 Portal</h1>
-    <div class="tag">Mess, cleaning and hall services, in one place.</div>
+  if(LM==="signin")b.innerHTML=`<h1>H14</h1>
+    <div class="tag">Mess, cleaning and hall services for Hall 14, in one place.</div>
     <div class="lform"><div class="lf"><label for="lr">Roll number</label>
       <input class="m" id="lr" value="261110071"></div>
       <div class="lf"><label for="lp">Password</label><input type="password" id="lp" value="••••••••"></div>
@@ -860,10 +915,13 @@ document.addEventListener("click",e=>{
   if(d.scan){S.booked.status="used";S.booked.at="8:42 pm";top();toast("Scanned — token is void");return draw();}
   if(d.cancel||d.again){S.booked=null;S.chosen=null;S.qty=1;return draw();}
 
-  if(d.vote){const mk=d.meal,id=+d.vote,m=MEALS.find(x=>x.k===mk);
-    if(S.picked[mk]===id)return;
-    if(S.picked[mk])m.items.find(i=>i.id===S.picked[mk]).n--;
-    m.items.find(i=>i.id===id).n++;S.picked[mk]=id;toast(m.label+" vote recorded");return draw();}
+  if(d.pday){S.pollDay=d.pday;return draw();}
+  if(d.vote){const dk=d.pd,mk=d.meal,id=+d.vote;
+    S.picked[dk][mk]=S.picked[dk][mk]===id?null:id;
+    return draw();}
+  if(d.submit){submitPoll();top();toast("Your week is submitted");return draw();}
+  if(d.edit){S.editing=true;S.pollDay="mon";top();return draw();}
+  if(d.cancedit){S.picked=JSON.parse(JSON.stringify(S.applied));S.editing=false;top();return draw();}
   if(d.rate){S.fb.given[d.rate]=+d.n;return draw();}
   if(d.fb){CRIT.forEach(([k])=>{const g=S.fb.given[k],r=S.responses;
       S.avg[k]=+(((S.avg[k]*r)+g)/(r+1)).toFixed(2);});
