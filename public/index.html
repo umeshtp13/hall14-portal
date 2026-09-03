@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hall 14 Portal — working prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#14263B; --ink-2:#1E3A5A; --slate:#5A6B82; --slate-2:#8492A6;
+  --line:#DDE4EC; --wash:#EEF2F6; --surface:#FFFFFF;
+  --brass:#C79A2B; --brass-deep:#8A6612; --brass-wash:#FBF3DC;
+  --green:#177A57; --green-wash:#E4F2EC;
+  --red:#B23A2E; --red-wash:#FBEBE9;
+  --ease:cubic-bezier(.22,.72,.28,1);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:"IBM Plex Sans",system-ui,sans-serif;background:var(--wash);color:var(--ink);
+  -webkit-font-smoothing:antialiased;display:flex;flex-direction:column;align-items:center;padding:20px 14px 34px;}
+.intro{max-width:430px;width:100%;margin-bottom:16px;}
+.intro h1{font-size:19px;font-weight:700;letter-spacing:-.015em;}
+.intro p{margin-top:6px;font-size:13.5px;line-height:1.5;color:var(--slate);}
+
+.phone{width:100%;max-width:430px;background:var(--surface);border-radius:26px;overflow:hidden;
+  box-shadow:0 1px 2px rgba(20,38,59,.10),0 18px 44px -14px rgba(20,38,59,.30);
+  display:flex;flex-direction:column;height:790px;position:relative;}
+
+/* ---------- login ---------- */
+.login{position:absolute;inset:0;background:var(--ink);color:#fff;z-index:20;
+  display:flex;flex-direction:column;justify-content:center;padding:34px 26px;
+  transition:opacity .34s var(--ease),transform .34s var(--ease);}
+.login[data-out="1"]{opacity:0;transform:scale(1.03);pointer-events:none;}
+.crest{width:46px;height:46px;border-radius:12px;background:var(--brass);color:#2A1F04;
+  display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:700;letter-spacing:-.02em;}
+.login h1{margin-top:20px;font-size:27px;font-weight:700;letter-spacing:-.025em;line-height:1.15;}
+.login .tag{margin-top:7px;font-size:13.5px;color:#9FB4CC;line-height:1.5;}
+.lform{margin-top:28px;}
+.lf{margin-bottom:13px;}
+.lf label{display:block;font-size:12px;font-weight:600;color:#9FB4CC;margin-bottom:6px;}
+.lf input{width:100%;font:inherit;font-size:15px;padding:12px 13px;border-radius:11px;color:#fff;
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);
+  transition:border-color .16s var(--ease),background .16s var(--ease);}
+.lf input::placeholder{color:#6E85A0;}
+.lf input:focus{outline:none;border-color:var(--brass);background:rgba(255,255,255,.12);}
+.lf input.mono{font-family:"IBM Plex Mono",monospace;letter-spacing:.03em;}
+.lbtn{width:100%;padding:13px;border:none;border-radius:11px;background:var(--brass);color:#2A1F04;
+  font:inherit;font-size:15px;font-weight:700;cursor:pointer;margin-top:6px;
+  transition:background .16s var(--ease),transform .12s var(--ease);}
+.lbtn:hover{background:#D8A932;}
+.lbtn:active{transform:scale(.985);}
+.lbtn:focus-visible{outline:2px solid #fff;outline-offset:2px;}
+.lnote{margin-top:18px;font-size:11.5px;color:#6E85A0;line-height:1.55;text-align:center;}
+.lswap{margin-top:15px;text-align:center;font-size:13px;color:#9FB4CC;}
+.lswap button{background:none;border:none;font:inherit;font-size:13px;font-weight:600;
+  color:var(--brass);cursor:pointer;padding:2px 4px;}
+.lswap button:hover{text-decoration:underline;}
+.lback{background:none;border:none;color:#9FB4CC;font:inherit;font-size:13px;cursor:pointer;
+  padding:4px 0;display:flex;align-items:center;gap:6px;}
+.lback:hover{color:#fff;}
+.lerr{margin-top:10px;font-size:12px;color:#F0A8A0;}
+.otp{display:flex;gap:8px;margin-top:6px;}
+.otp input{flex:1;text-align:center;font-family:"IBM Plex Mono",monospace;font-size:19px;
+  font-weight:600;padding:12px 0;border-radius:11px;color:#fff;
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);}
+.otp input:focus{outline:none;border-color:var(--brass);}
+.lhint{margin-top:9px;font-size:12px;color:#9FB4CC;line-height:1.5;}
+.lswap{margin-top:16px;text-align:center;font-size:13px;color:#9FB4CC;}
+.lswap button{background:none;border:none;color:var(--brass);font:inherit;font-size:13px;font-weight:600;
+  cursor:pointer;padding:2px 4px;border-radius:5px;}
+.lswap button:hover{text-decoration:underline;}
+.lswap button:focus-visible{outline:2px solid var(--brass);outline-offset:1px;}
+.lback{background:none;border:none;color:#9FB4CC;font:inherit;font-size:13px;cursor:pointer;
+  display:flex;align-items:center;gap:6px;padding:4px 0;margin-bottom:4px;}
+.lback:hover{color:#fff;}
+.lback svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+.steps{display:flex;gap:5px;margin-top:16px;}
+.steps i{flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.16);display:block;}
+.steps i[data-on="1"]{background:var(--brass);}
+.lhint{margin-top:7px;font-size:12px;color:#6E85A0;line-height:1.5;}
+.otp{font-family:"IBM Plex Mono",monospace!important;font-size:24px!important;letter-spacing:.36em;
+  text-align:center;padding:13px 10px!important;}
+.demo{margin-top:11px;background:rgba(199,154,43,.14);border:1px solid rgba(199,154,43,.34);
+  border-radius:10px;padding:9px 11px;font-size:12px;color:#E8CE86;line-height:1.5;}
+.demo b{font-family:"IBM Plex Mono",monospace;letter-spacing:.12em;color:var(--brass);}
+.lerr{margin-top:9px;font-size:12.5px;color:#F2A9A0;}
+
+/* ---------- top ---------- */
+.top{background:var(--ink);color:#fff;padding:13px 14px;flex:none;display:flex;align-items:center;gap:11px;}
+.burger{background:none;border:none;padding:5px;cursor:pointer;color:#fff;display:flex;border-radius:8px;
+  transition:background .16s var(--ease);}
+.burger:hover{background:rgba(255,255,255,.13);}
+.burger:active{transform:scale(.93);}
+.burger:focus-visible{outline:2px solid var(--brass);outline-offset:1px;}
+.burger svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;}
+.top .hall{font-size:15px;font-weight:600;letter-spacing:-.01em;}
+.top .who{margin-top:2px;font-size:12.5px;color:#9FB4CC;display:flex;gap:7px;}
+.top .who .roll{font-family:"IBM Plex Mono",monospace;font-weight:500;}
+.av{margin-left:auto;width:34px;height:34px;border-radius:50%;background:var(--brass);color:#2A1F04;
+  border:none;font:inherit;font-size:12.5px;font-weight:700;cursor:pointer;letter-spacing:.02em;
+  transition:transform .14s var(--ease);}
+.av:hover{transform:scale(1.06);}
+.av:focus-visible{outline:2px solid #fff;outline-offset:2px;}
+
+/* ---------- drawer ---------- */
+.scrim{position:absolute;inset:0;background:rgba(11,22,36,.5);opacity:0;pointer-events:none;
+  transition:opacity .24s var(--ease);z-index:8;}
+.scrim[data-open="1"]{opacity:1;pointer-events:auto;}
+.drawer{position:absolute;top:0;bottom:0;left:0;width:272px;background:var(--surface);z-index:9;
+  transform:translateX(-100%);transition:transform .3s var(--ease);
+  display:flex;flex-direction:column;box-shadow:2px 0 28px rgba(20,38,59,.2);}
+.drawer[data-open="1"]{transform:translateX(0);}
+.drawer .dhead{background:var(--ink);color:#fff;padding:17px 16px 16px;}
+.drawer .dhead .n{font-size:15px;font-weight:600;}
+.drawer .dhead .r{margin-top:3px;font-size:12.5px;color:#9FB4CC;font-family:"IBM Plex Mono",monospace;}
+.drawer .items{padding:9px 0;flex:1;overflow-y:auto;}
+.drawer .items button{width:100%;display:flex;align-items:center;gap:11px;padding:11px 16px;border:none;
+  background:none;font:inherit;font-size:14px;color:var(--ink);cursor:pointer;text-align:left;
+  transition:background .14s var(--ease);}
+.drawer .items button:hover{background:var(--wash);}
+.drawer .items button[data-on="1"]{background:var(--brass-wash);color:var(--brass-deep);font-weight:600;
+  box-shadow:inset 3px 0 0 var(--brass);}
+.drawer .items svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.7;
+  stroke-linecap:round;stroke-linejoin:round;flex:none;}
+.drawer .items .tag{margin-left:auto;font-size:11px;font-weight:600;background:var(--red);color:#fff;
+  border-radius:20px;padding:1px 7px;}
+.drawer .dfoot{padding:13px 16px;border-top:1px solid var(--line);font-size:11.5px;color:var(--slate);line-height:1.5;}
+
+.screen{flex:1;overflow-y:auto;padding:18px 18px 26px;scroll-behavior:smooth;}
+.page{animation:rise .3s var(--ease) both;}
+@keyframes rise{from{opacity:0;transform:translateY(7px);}to{opacity:1;transform:none;}}
+h2{font-size:17px;font-weight:700;letter-spacing:-.015em;}
+.sub{margin-top:3px;font-size:13px;color:var(--slate);line-height:1.45;}
+.gap{height:16px;}
+.card{border:1px solid var(--line);border-radius:13px;padding:13px 14px;margin-bottom:9px;}
+.meal .row{display:flex;justify-content:space-between;align-items:baseline;gap:10px;}
+.meal .name{font-size:14px;font-weight:600;}
+.meal .time{font-size:12px;color:var(--slate);font-variant-numeric:tabular-nums;}
+.meal .food{margin-top:5px;font-size:13px;color:var(--slate);line-height:1.5;}
+.secline{display:flex;align-items:center;gap:10px;margin:20px 0 12px;}
+.secline b{font-size:14px;font-weight:700;letter-spacing:-.01em;white-space:nowrap;}
+.secline i{flex:1;height:1px;background:var(--line);display:block;}
+
+/* ---------- specials ---------- */
+.sp{width:100%;text-align:left;font:inherit;color:inherit;background:var(--surface);cursor:pointer;
+  border:1px solid var(--line);border-radius:13px;padding:12px 13px;margin-bottom:9px;display:block;
+  transition:border-color .16s var(--ease),background .16s var(--ease),transform .12s var(--ease);}
+.sp:hover{border-color:var(--brass);}
+.sp:active{transform:scale(.99);}
+.sp:focus-visible{outline:2px solid var(--ink-2);outline-offset:2px;}
+.sp .r1{display:flex;justify-content:space-between;align-items:baseline;gap:10px;}
+.sp .nm{font-size:14.5px;font-weight:600;}
+.sp .pr{font-family:"IBM Plex Mono",monospace;font-size:13.5px;font-weight:600;}
+.sp .r2{margin-top:4px;display:flex;justify-content:space-between;align-items:center;gap:10px;}
+.sp .wh{font-size:12.5px;color:var(--slate);}
+.sp .cl{font-size:11.5px;font-weight:600;color:var(--brass-deep);}
+.sp[data-shut="1"]{opacity:.5;cursor:not-allowed;}
+.sp[data-shut="1"] .cl{color:var(--slate-2);}
+
+/* ---------- segmented ---------- */
+.seg{display:flex;background:var(--wash);border-radius:11px;padding:3px;gap:3px;margin-bottom:16px;}
+.seg button{flex:1;padding:8px 4px;border:none;border-radius:9px;background:none;font:inherit;
+  font-size:12.5px;font-weight:600;color:var(--slate);cursor:pointer;
+  transition:background .18s var(--ease),color .18s var(--ease);}
+.seg button[data-on="1"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(20,38,59,.12);}
+.seg button:focus-visible{outline:2px solid var(--ink-2);outline-offset:1px;}
+
+/* ---------- vote ---------- */
+.mealhead{display:flex;justify-content:space-between;align-items:baseline;margin:16px 0 9px;}
+.mealhead b{font-size:14.5px;font-weight:700;letter-spacing:-.01em;}
+.mealhead span{font-size:11.5px;font-weight:600;color:var(--slate-2);}
+.mealhead span[data-done="1"]{color:var(--green);}
+.dish{border:1px solid var(--line);border-radius:13px;padding:11px 13px;margin-bottom:7px;cursor:pointer;
+  background:var(--surface);width:100%;text-align:left;font:inherit;color:inherit;display:block;
+  transition:border-color .16s var(--ease),background .16s var(--ease),transform .12s var(--ease);}
+.dish:hover{border-color:var(--ink-2);}
+.dish:active{transform:scale(.99);}
+.dish:focus-visible{outline:2px solid var(--ink-2);outline-offset:2px;}
+.dish[data-picked="1"]{border-color:var(--green);background:var(--green-wash);box-shadow:0 0 0 1px var(--green);}
+.dish .head{display:flex;justify-content:space-between;align-items:center;gap:10px;}
+.dish .label{font-size:13.5px;font-weight:600;}
+.dish .count{font-size:12px;color:var(--slate);font-variant-numeric:tabular-nums;white-space:nowrap;}
+.bar{height:5px;border-radius:3px;background:var(--wash);margin-top:8px;overflow:hidden;}
+.bar i{display:block;height:100%;background:var(--ink-2);border-radius:3px;transition:width .5s var(--ease);}
+.dish[data-picked="1"] .bar i{background:var(--green);}
+.recorded{background:var(--green-wash);border-radius:12px;padding:13px 14px;margin-bottom:6px;
+  display:flex;gap:11px;align-items:flex-start;animation:rise .3s var(--ease) both;}
+.recorded svg{width:20px;height:20px;flex:none;stroke:var(--green);fill:none;stroke-width:2.2;
+  stroke-linecap:round;stroke-linejoin:round;margin-top:1px;}
+.recorded .rt{font-size:13.5px;font-weight:600;color:#0F5B41;}
+.recorded .rd{margin-top:3px;font-size:12.5px;color:#2C6B54;line-height:1.5;}
+.progress{background:var(--wash);border-radius:12px;padding:11px 13px;margin-bottom:6px;
+  font-size:12.5px;color:var(--slate);line-height:1.5;}
+
+/* ---------- feedback ---------- */
+.crit{border:1px solid var(--line);border-radius:13px;padding:12px 13px;margin-bottom:9px;}
+.crit .cname{font-size:14px;font-weight:600;}
+.crit .chint{margin-top:2px;font-size:12px;color:var(--slate);}
+.scale{display:flex;gap:7px;margin-top:10px;}
+.scale button{flex:1;height:38px;border:1px solid var(--line);border-radius:10px;background:var(--surface);
+  font:inherit;font-size:14px;font-weight:600;color:var(--slate);cursor:pointer;
+  transition:background .16s var(--ease),color .16s var(--ease),border-color .16s var(--ease),transform .12s var(--ease);}
+.scale button:hover{border-color:var(--ink-2);color:var(--ink);}
+.scale button:active{transform:scale(.94);}
+.scale button[data-on="1"]{background:var(--ink);border-color:var(--ink);color:#fff;}
+.scalekey{display:flex;justify-content:space-between;margin-top:6px;font-size:11.5px;color:var(--slate-2);}
+
+.locked{border:1px dashed var(--line);border-radius:13px;padding:24px 18px;text-align:center;background:var(--wash);}
+.locked svg{width:28px;height:28px;stroke:var(--slate-2);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;}
+.locked .lt{margin-top:10px;font-size:14.5px;font-weight:600;}
+.locked .ld{margin-top:5px;font-size:12.5px;color:var(--slate);line-height:1.5;}
+.counter{display:flex;gap:8px;justify-content:center;margin-top:14px;}
+.counter div{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:7px 11px;min-width:52px;}
+.counter b{display:block;font-family:"IBM Plex Mono",monospace;font-size:17px;font-weight:700;}
+.counter span{display:block;margin-top:1px;font-size:10.5px;color:var(--slate-2);}
+.res{border:1px solid var(--line);border-radius:13px;padding:11px 13px;margin-bottom:7px;}
+.res .rtop{display:flex;justify-content:space-between;align-items:baseline;}
+.res .rname{font-size:13.5px;font-weight:600;}
+.res .rnum{font-family:"IBM Plex Mono",monospace;font-size:14px;font-weight:600;}
+.winner{background:var(--brass-wash);border:1px solid var(--brass);border-radius:13px;padding:12px 13px;margin-bottom:9px;}
+.winner .wl{font-size:11.5px;font-weight:600;color:var(--brass-deep);}
+.winner .wn{margin-top:2px;font-size:17px;font-weight:700;letter-spacing:-.015em;}
+.winner .wv{margin-top:2px;font-size:12.5px;color:var(--brass-deep);}
+.share{background:var(--wash);border-radius:13px;padding:13px;margin-top:14px;}
+.share .stitle{font-size:13.5px;font-weight:600;}
+.share .stext{margin-top:4px;font-size:12.5px;color:var(--slate);line-height:1.5;}
+.linkrow{display:flex;gap:8px;margin-top:10px;}
+.linkrow input{flex:1;font-family:"IBM Plex Mono",monospace;font-size:12px;padding:9px 10px;
+  border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--slate);min-width:0;}
+.linkrow button{padding:9px 14px;border:none;border-radius:10px;background:var(--ink);color:#fff;font:inherit;
+  font-size:12.5px;font-weight:600;cursor:pointer;white-space:nowrap;transition:background .16s var(--ease);}
+.linkrow button:hover{background:var(--ink-2);}
+.shrow{display:flex;gap:8px;margin-top:9px;}
+.shrow button{flex:1;padding:9px;border:1px solid var(--line);border-radius:10px;background:var(--surface);
+  font:inherit;font-size:12.5px;font-weight:600;color:var(--ink);cursor:pointer;transition:border-color .16s var(--ease);}
+.shrow button:hover{border-color:var(--ink-2);}
+
+/* ---------- token ---------- */
+.token{background:var(--brass);color:#2A1F04;border-radius:15px;padding:17px;position:relative;overflow:hidden;
+  animation:pop .38s var(--ease) both;}
+@keyframes pop{from{opacity:0;transform:scale(.96) translateY(8px);}to{opacity:1;transform:none;}}
+.token .k{font-size:12px;font-weight:600;color:#6B5210;}
+.token .item{margin-top:2px;font-size:20px;font-weight:700;letter-spacing:-.02em;}
+.token .code{font-family:"IBM Plex Mono",monospace;font-size:27px;font-weight:700;letter-spacing:.04em;margin-top:13px;line-height:1;}
+.token .codelab{margin-top:4px;font-size:11.5px;font-weight:600;color:#6B5210;}
+.qrbox{margin-top:13px;background:#fff;border-radius:11px;padding:10px;display:flex;
+  justify-content:center;box-shadow:0 1px 3px rgba(42,31,4,.22);}
+.qrbox svg{display:block;}
+.token[data-void="1"] .qrbox{opacity:.42;filter:grayscale(1);}
+.bars{display:flex;gap:2px;height:38px;margin-top:13px;align-items:stretch;}
+.bars i{display:block;background:#2A1F04;border-radius:1px;}
+.token .strip{margin-top:14px;padding-top:12px;border-top:2px dashed rgba(42,31,4,.32);
+  display:flex;justify-content:space-between;font-size:12.5px;}
+.token .strip span{color:#6B5210;}
+.token .strip b{display:block;font-weight:600;margin-top:1px;}
+.token .strip .m{font-family:"IBM Plex Mono",monospace;}
+.token[data-void="1"]{background:#D8DEE5;color:#67717D;}
+.token[data-void="1"] .k,.token[data-void="1"] .codelab,.token[data-void="1"] .strip span{color:#8A929B;}
+.token[data-void="1"] .bars i{background:#A8B1BA;}
+.token[data-void="1"] .strip{border-top-color:rgba(103,113,125,.4);}
+.stamp{position:absolute;top:50px;right:-6px;transform:rotate(-11deg);border:3px solid var(--red);color:var(--red);
+  border-radius:8px;padding:4px 13px;font-size:20px;font-weight:700;letter-spacing:.07em;opacity:.88;
+  animation:slam .3s var(--ease) both;}
+@keyframes slam{from{opacity:0;transform:rotate(-11deg) scale(1.5);}to{opacity:.88;transform:rotate(-11deg) scale(1);}}
+.showline{margin-top:11px;font-size:13px;color:var(--slate);line-height:1.5;}
+.voidline{margin-top:11px;background:var(--red-wash);color:#7A2A20;border-radius:12px;padding:11px 12px;font-size:12.5px;line-height:1.5;}
+.compare{border:1px solid var(--line);border-radius:13px;overflow:hidden;margin-top:14px;}
+.compare div{padding:11px 13px;font-size:12.5px;line-height:1.5;}
+.compare .now{background:var(--red-wash);color:#7A2A20;}
+.compare .then{background:var(--green-wash);color:#0F5B41;border-top:1px solid var(--line);}
+.compare b{font-weight:600;}
+.qty{display:flex;align-items:center;gap:12px;margin-top:12px;}
+.qty button{width:38px;height:38px;border-radius:10px;border:1px solid var(--line);background:var(--surface);
+  font-size:19px;color:var(--ink);cursor:pointer;line-height:1;transition:border-color .16s var(--ease),transform .12s var(--ease);}
+.qty button:hover{border-color:var(--ink-2);}
+.qty button:active{transform:scale(.92);}
+.qty .n{font-family:"IBM Plex Mono",monospace;font-size:17px;font-weight:600;min-width:22px;text-align:center;}
+.qty .lab{font-size:13px;color:var(--slate);}
+.pickbar{background:var(--brass-wash);border-radius:12px;padding:12px 13px;margin-bottom:4px;}
+.pickbar .pl{font-size:12px;font-weight:600;color:var(--brass-deep);}
+.pickbar .pn{margin-top:2px;font-size:16px;font-weight:700;letter-spacing:-.015em;}
+.pickbar .pw{margin-top:2px;font-size:12.5px;color:var(--brass-deep);}
+
+/* ---------- notices ---------- */
+.nc{display:block;width:100%;text-align:left;font:inherit;color:inherit;background:var(--surface);
+  border:1px solid var(--line);border-radius:13px;padding:12px 13px;margin-bottom:9px;cursor:pointer;
+  transition:border-color .16s var(--ease),box-shadow .16s var(--ease);}
+.nc:hover{border-color:var(--ink-2);}
+.nc[data-open="1"]{border-color:var(--ink-2);box-shadow:0 1px 4px rgba(20,38,59,.10);}
+.nc:focus-visible{outline:2px solid var(--ink-2);outline-offset:2px;}
+.nrow{display:flex;align-items:center;gap:7px;margin-bottom:6px;}
+.ntag{font-size:10.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+  padding:2px 7px;border-radius:5px;}
+.nt-meet{background:var(--brass-wash);color:var(--brass-deep);}
+.nt-min{background:#E7EEF7;color:var(--ink-2);}
+.nt-maint{background:var(--red-wash);color:#7A2A20;}
+.nt-mess{background:var(--green-wash);color:var(--green);}
+.nt-res{background:#EDE7F6;color:#4A3B7A;}
+.npin{font-size:10.5px;font-weight:600;color:var(--slate-2);}
+.ndot{width:7px;height:7px;border-radius:50%;background:var(--red);}
+.ndate{margin-left:auto;font-size:11.5px;color:var(--slate-2);font-variant-numeric:tabular-nums;}
+.ntitle{font-size:14px;font-weight:600;line-height:1.35;}
+.nbody{margin-top:7px;font-size:13px;color:var(--slate);line-height:1.55;}
+.nby{margin-top:7px;font-size:11.5px;color:var(--slate-2);}
+
+/* ---------- profile ---------- */
+.phead{display:flex;gap:13px;align-items:center;margin-bottom:16px;}
+.pav{width:56px;height:56px;border-radius:50%;background:var(--brass);color:#2A1F04;flex:none;
+  display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:700;letter-spacing:.02em;}
+.phead .pn2{font-size:18px;font-weight:700;letter-spacing:-.018em;}
+.phead .pr2{margin-top:2px;font-size:13px;color:var(--slate);font-family:"IBM Plex Mono",monospace;}
+.rows{border:1px solid var(--line);border-radius:13px;overflow:hidden;margin-bottom:14px;}
+.rows .r{display:flex;justify-content:space-between;gap:14px;padding:11px 13px;font-size:13.5px;
+  border-bottom:1px solid var(--line);}
+.rows .r:last-child{border-bottom:none;}
+.rows .r span{color:var(--slate);flex:none;}
+.rows .r b{font-weight:600;text-align:right;}
+.rows .r b.m{font-family:"IBM Plex Mono",monospace;font-weight:600;}
+.stat{display:flex;gap:9px;margin-bottom:14px;}
+.stat div{flex:1;border:1px solid var(--line);border-radius:12px;padding:11px 12px;}
+.stat b{display:block;font-family:"IBM Plex Mono",monospace;font-size:19px;font-weight:700;}
+.stat span{display:block;margin-top:2px;font-size:11.5px;color:var(--slate-2);line-height:1.35;}
+
+/* ---------- complaints ---------- */
+.field{margin-bottom:11px;}
+.field label{display:block;font-size:12.5px;font-weight:600;margin-bottom:5px;}
+.field .opt{font-weight:400;color:var(--slate-2);}
+select,textarea,input.f{width:100%;font:inherit;font-size:13.5px;padding:10px 11px;border:1px solid var(--line);
+  border-radius:11px;background:var(--surface);color:var(--ink);transition:border-color .16s var(--ease);}
+textarea{resize:none;height:74px;line-height:1.45;}
+select:focus,textarea:focus,input.f:focus{outline:2px solid var(--ink-2);outline-offset:-1px;border-color:var(--ink-2);}
+.drop{border:1.5px dashed var(--line);border-radius:12px;padding:16px;text-align:center;cursor:pointer;display:block;
+  transition:border-color .16s var(--ease),background .16s var(--ease);}
+.drop:hover{border-color:var(--ink-2);background:var(--wash);}
+.drop svg{width:22px;height:22px;stroke:var(--slate-2);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;}
+.drop .dt{margin-top:6px;font-size:13px;font-weight:600;}
+.drop .dd{margin-top:2px;font-size:12px;color:var(--slate-2);}
+.drop input{display:none;}
+.shot{position:relative;border-radius:12px;overflow:hidden;border:1px solid var(--line);animation:rise .28s var(--ease) both;}
+.shot img{display:block;width:100%;height:150px;object-fit:cover;}
+.shot button{position:absolute;top:8px;right:8px;width:28px;height:28px;border:none;border-radius:50%;
+  background:rgba(20,38,59,.78);color:#fff;font-size:16px;line-height:1;cursor:pointer;}
+.case{border:1px solid var(--line);border-radius:13px;padding:12px 13px;margin-bottom:9px;}
+.case .top-row{display:flex;justify-content:space-between;align-items:center;gap:10px;}
+.case .ref{font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:600;color:var(--slate);}
+.case .txt{margin-top:6px;font-size:13.5px;font-weight:500;line-height:1.4;}
+.case .meta{margin-top:6px;font-size:12px;color:var(--slate);line-height:1.5;}
+.case .thumb{margin-top:9px;border-radius:9px;width:100%;height:104px;object-fit:cover;display:block;}
+.pill{padding:2px 9px;border-radius:20px;font-size:11.5px;font-weight:600;white-space:nowrap;}
+.pill.open{background:var(--brass-wash);color:var(--brass-deep);}
+.pill.prog{background:#E7EEF7;color:var(--ink-2);}
+.pill.done{background:var(--green-wash);color:var(--green);}
+
+.btn{width:100%;padding:12.5px;border:none;border-radius:12px;background:var(--ink);color:#fff;font:inherit;
+  font-size:14px;font-weight:600;cursor:pointer;margin-top:3px;
+  transition:background .16s var(--ease),transform .12s var(--ease);}
+.btn:hover{background:var(--ink-2);}
+.btn:active{transform:scale(.985);}
+.btn:focus-visible{outline:2px solid var(--brass);outline-offset:2px;}
+.btn.ghost{background:transparent;color:var(--slate);border:1px solid var(--line);}
+.btn.ghost:hover{background:var(--wash);color:var(--ink);}
+.btn.scan{background:var(--green);}
+.btn.scan:hover{background:#12684A;}
+.btn.red{background:transparent;color:var(--red);border:1px solid var(--line);}
+.btn.red:hover{background:var(--red-wash);}
+.btn[disabled]{background:var(--line);color:#98A2AF;cursor:not-allowed;transform:none;}
+.btn.sm{padding:9px;font-size:12.5px;border-radius:10px;}
+.done-note{background:var(--green-wash);border-radius:12px;padding:12px 13px;font-size:13px;color:#0F5B41;
+  line-height:1.5;margin-bottom:14px;animation:rise .3s var(--ease) both;}
+.done-note .ref{font-family:"IBM Plex Mono",monospace;font-weight:600;}
+.toast{position:absolute;left:50%;bottom:80px;transform:translateX(-50%) translateY(10px);background:var(--ink);
+  color:#fff;padding:10px 16px;border-radius:22px;font-size:12.5px;font-weight:500;opacity:0;pointer-events:none;
+  transition:opacity .22s var(--ease),transform .22s var(--ease);z-index:12;white-space:nowrap;
+  box-shadow:0 6px 18px rgba(20,38,59,.28);}
+.toast[data-on="1"]{opacity:1;transform:translateX(-50%) translateY(0);}
+nav{display:flex;border-top:1px solid var(--line);background:var(--surface);flex:none;}
+nav button{flex:1;padding:9px 4px 11px;border:none;background:none;cursor:pointer;font:inherit;font-size:11px;
+  font-weight:500;color:var(--slate-2);display:flex;flex-direction:column;align-items:center;gap:3px;
+  transition:color .16s var(--ease);}
+nav button svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;
+  stroke-linejoin:round;transition:transform .18s var(--ease);}
+nav button[data-on="1"]{color:var(--ink);font-weight:600;}
+nav button[data-on="1"] svg{transform:translateY(-1px);}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
+</style>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#14263B">
+</head>
+<body>
+
+<div class="intro">
+  <h1>Hall 14 Portal</h1>
+  <p>A working prototype. Sign in, vote a dish for each meal, reserve a special item and get a single-use token, rate the mess, and file a complaint with a photo.</p>
+</div>
+
+<div class="phone">
+  <!-- login -->
+  <div class="login" id="login" data-out="0">
+    <div class="crest">H14</div>
+    <div id="lbody"></div>
+  </div>
+
+  <div class="top">
+    <button class="burger" id="burger" aria-label="Open menu">
+      <svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    <div>
+      <div class="hall">Hall 14</div>
+      <div class="who"><span id="uname">Umesh Tupdale</span> <span class="roll" id="uroll">261110071</span></div>
+    </div>
+    <button class="av" id="avatar" aria-label="Profile">UT</button>
+  </div>
+
+  <div class="screen" id="screen"></div>
+  <nav id="nav"></nav>
+
+  <div class="scrim" id="scrim" data-open="0"></div>
+  <aside class="drawer" id="drawer" data-open="0" aria-label="Navigation">
+    <div class="dhead"><div class="n">Umesh Tupdale</div><div class="r">261110071</div></div>
+    <div class="items" id="ditems"></div>
+    <div class="dfoot">Prototype with sample data. Built to show the system is buildable, not to run the hall today.</div>
+  </aside>
+
+  <div class="toast" id="toast" data-on="0"></div>
+</div>
+
+<script>
+/* Minimal QR encoder — byte mode, versions 1-10, EC level L/M. Returns boolean matrix. */
+const QR=(function(){
+  const EXP=new Uint8Array(512), LOG=new Uint8Array(256);
+  (function(){let x=1;for(let i=0;i<255;i++){EXP[i]=x;LOG[x]=i;x<<=1;if(x&0x100)x^=0x11D;}
+   for(let i=255;i<512;i++)EXP[i]=EXP[i-255];})();
+  const mul=(a,b)=>(a===0||b===0)?0:EXP[LOG[a]+LOG[b]];
+
+  function rsPoly(n){let p=[1];
+    for(let i=0;i<n;i++){const q=[...p,0];
+      for(let j=0;j<p.length;j++)q[j+1]^=mul(p[j],EXP[i]);p=q;}
+    return p;}
+
+  function rsEncode(data,ecLen){
+    const gen=rsPoly(ecLen), res=new Array(ecLen).fill(0);
+    for(const d of data){const f=d^res[0];res.shift();res.push(0);
+      for(let i=0;i<ecLen;i++)res[i]^=mul(gen[i+1],f);}
+    return res;}
+
+  // version -> [ecPerBlock, g1blocks, g1data, g2blocks, g2data]
+  const RS={
+    L:{1:[7,1,19],2:[10,1,34],3:[15,1,55],4:[20,1,80],5:[26,1,108],
+       6:[18,2,68],7:[20,2,78],8:[24,2,97],9:[30,2,116],10:[18,2,68,2,69]},
+    M:{1:[10,1,16],2:[16,1,28],3:[26,1,44],4:[18,2,32],5:[24,2,43],
+       6:[16,4,27],7:[18,4,31],8:[22,2,38,2,39],9:[22,3,36,2,37],10:[26,4,43,1,44]}
+  };
+  const ALIGN={1:[],2:[6,18],3:[6,22],4:[6,26],5:[6,30],
+               6:[6,34],7:[6,22,38],8:[6,24,42],9:[6,26,46],10:[6,28,50]};
+  const VINFO={7:0x07C94,8:0x085BC,9:0x09A99,10:0x0A4D3};
+
+  const dataCap=(v,ec)=>{const r=RS[ec][v];return r[1]*r[2]+(r[3]?r[3]*r[4]:0);};
+
+  function encode(text,ec){
+    ec=ec||"M";
+    const bytes=Array.from(new TextEncoder().encode(text));
+    let v=0;
+    for(let i=1;i<=10;i++){
+      const cc=i<10?8:16;
+      if(4+cc+bytes.length*8<=dataCap(i,ec)*8){v=i;break;}
+    }
+    if(!v) throw new Error("payload too long");
+
+    const bits=[];
+    const push=(val,n)=>{for(let i=n-1;i>=0;i--)bits.push((val>>i)&1);};
+    push(4,4); push(bytes.length, v<10?8:16);
+    for(const b of bytes) push(b,8);
+
+    const cap=dataCap(v,ec)*8;
+    for(let i=0;i<4&&bits.length<cap;i++)bits.push(0);
+    while(bits.length%8)bits.push(0);
+    const pads=[0xEC,0x11];let pi=0;
+    while(bits.length<cap){push(pads[pi++%2],8);}
+
+    const codes=[];
+    for(let i=0;i<bits.length;i+=8){let b=0;for(let j=0;j<8;j++)b=(b<<1)|bits[i+j];codes.push(b);}
+
+    const r=RS[ec][v], ecLen=r[0];
+    const groups=[]; let p=0;
+    for(let i=0;i<r[1];i++){groups.push(codes.slice(p,p+r[2]));p+=r[2];}
+    if(r[3])for(let i=0;i<r[3];i++){groups.push(codes.slice(p,p+r[4]));p+=r[4];}
+    const ecs=groups.map(g=>rsEncode(g,ecLen));
+
+    const out=[];
+    const maxD=Math.max(...groups.map(g=>g.length));
+    for(let i=0;i<maxD;i++)for(const g of groups)if(i<g.length)out.push(g[i]);
+    for(let i=0;i<ecLen;i++)for(const e of ecs)out.push(e[i]);
+
+    return build(out,v,ec);
+  }
+
+  function build(codes,v,ec){
+    const n=17+v*4;
+    const m=Array.from({length:n},()=>new Array(n).fill(0));
+    const fn=Array.from({length:n},()=>new Array(n).fill(false));
+    const set=(r,c,val)=>{m[r][c]=val?1:0;fn[r][c]=true;};
+
+    const finder=(r,c)=>{
+      for(let i=-1;i<=7;i++)for(let j=-1;j<=7;j++){
+        const rr=r+i, cc=c+j; if(rr<0||cc<0||rr>=n||cc>=n)continue;
+        const on=(i>=0&&i<=6&&(j===0||j===6))||(j>=0&&j<=6&&(i===0||i===6))||(i>=2&&i<=4&&j>=2&&j<=4);
+        set(rr,cc,on);}};
+    finder(0,0);finder(0,n-7);finder(n-7,0);
+
+    for(let i=8;i<n-8;i++){set(6,i,i%2===0);set(i,6,i%2===0);}
+
+    const al=ALIGN[v];
+    for(const r of al)for(const c of al){
+      if((r<=8&&c<=8)||(r<=8&&c>=n-9)||(r>=n-9&&c<=8))continue;
+      for(let i=-2;i<=2;i++)for(let j=-2;j<=2;j++)
+        set(r+i,c+j, Math.max(Math.abs(i),Math.abs(j))!==1);}
+
+    for(let i=0;i<9;i++){ if(!fn[8][i])set(8,i,false); if(!fn[i][8])set(i,8,false); }
+    for(let i=0;i<8;i++) set(8,n-1-i,false);   // row 8, cols n-8..n-1
+    for(let i=0;i<7;i++) set(n-1-i,8,false);   // col 8, rows n-7..n-1
+    set(n-8,8,true);                            // dark module, after reservation
+
+    if(v>=7){const vi=VINFO[v];
+      for(let i=0;i<18;i++){const b=(vi>>i)&1;
+        set(Math.floor(i/3), n-11+i%3, b); set(n-11+i%3, Math.floor(i/3), b);}}
+
+    // data placement
+    let bi=0; const bitAt=k=>(codes[k>>3]>>(7-(k&7)))&1;
+    let up=true;
+    for(let c=n-1;c>0;c-=2){
+      if(c===6)c--;
+      for(let k=0;k<n;k++){
+        const r=up?n-1-k:k;
+        for(let s=0;s<2;s++){const cc=c-s;
+          if(fn[r][cc])continue;
+          m[r][cc]= bi<codes.length*8 ? bitAt(bi++) : 0;}
+      }
+      up=!up;
+    }
+
+    const MASK=[(r,c)=>(r+c)%2===0,(r,c)=>r%2===0,(r,c)=>c%3===0,(r,c)=>(r+c)%3===0,
+      (r,c)=>(((r>>1)+Math.floor(c/3))%2)===0,(r,c)=>((r*c)%2+(r*c)%3)===0,
+      (r,c)=>(((r*c)%2+(r*c)%3)%2)===0,(r,c)=>(((r+c)%2+(r*c)%3)%2)===0];
+
+    let best=null,bestPen=Infinity;
+    for(let k=0;k<8;k++){
+      const t=m.map(row=>row.slice());
+      for(let r=0;r<n;r++)for(let c=0;c<n;c++)
+        if(!fn[r][c]&&MASK[k](r,c))t[r][c]^=1;
+      fmt(t,fn,ec,k,n);
+      const p=penalty(t,n);
+      if(p<bestPen){bestPen=p;best=t;}
+    }
+    return best;
+  }
+
+  function fmt(t,fn,ec,mask,n){
+    const ECB={L:1,M:0,Q:3,H:2}[ec];
+    const d=(ECB<<3)|mask; let r=d<<10;
+    for(let i=4;i>=0;i--) if((r>>(i+10))&1) r^=0x537<<i;
+    const bits=((d<<10)|r)^0x5412;
+    const bit=k=>(bits>>(14-k))&1;            // position 0 carries the MSB
+    const p1=[]; for(let i=0;i<6;i++)p1.push([8,i]);
+    p1.push([8,7],[8,8],[7,8]);
+    for(let i=5;i>=0;i--)p1.push([i,8]);
+    const p2=[]; for(let i=0;i<7;i++)p2.push([n-1-i,8]);
+    for(let i=0;i<8;i++)p2.push([8,n-8+i]);
+    p1.forEach((q,k)=>{t[q[0]][q[1]]=bit(k);});
+    p2.forEach((q,k)=>{t[q[0]][q[1]]=bit(k);});
+  }
+
+  function penalty(m,n){
+    let p=0;
+    for(let r=0;r<n;r++){let run=1;
+      for(let c=1;c<n;c++){ if(m[r][c]===m[r][c-1])run++; else {if(run>=5)p+=3+(run-5);run=1;} }
+      if(run>=5)p+=3+(run-5);}
+    for(let c=0;c<n;c++){let run=1;
+      for(let r=1;r<n;r++){ if(m[r][c]===m[r-1][c])run++; else {if(run>=5)p+=3+(run-5);run=1;} }
+      if(run>=5)p+=3+(run-5);}
+    for(let r=0;r<n-1;r++)for(let c=0;c<n-1;c++)
+      if(m[r][c]===m[r][c+1]&&m[r][c]===m[r+1][c]&&m[r][c]===m[r+1][c+1])p+=3;
+    const pat=[1,0,1,1,1,0,1];
+    const chk=(get)=>{for(let i=0;i+7<=n;i++){let ok=true;
+      for(let j=0;j<7;j++)if(get(i+j)!==pat[j]){ok=false;break;}
+      if(ok)p+=40;}};
+    for(let r=0;r<n;r++)chk(i=>m[r][i]);
+    for(let c=0;c<n;c++)chk(i=>m[i][c]);
+    let dark=0;for(let r=0;r<n;r++)for(let c=0;c<n;c++)dark+=m[r][c];
+    p+=Math.floor(Math.abs(dark*100/(n*n)-50)/5)*10;
+    return p;
+  }
+
+  return {encode};
+})();
+
+const ME={name:"Umesh Tupdale",roll:"261110071",room:"C-402",block:"C block, 4th floor",
+  prog:"M.Tech",dept:"Computer Science and Engineering",email:"umesht26@iitk.ac.in",
+  phone:"+91 •••••  ••071",mess:"Veg with non-veg option",joined:"July 2026"};
+
+const SPECIALS=[
+  {id:1,name:"Chicken curry",when:"Thursday dinner",price:60,shut:false},
+  {id:2,name:"Fish fry",when:"Saturday dinner",price:80,shut:false},
+  {id:3,name:"Paneer tikka",when:"Friday dinner",price:50,shut:false},
+  {id:4,name:"Egg biryani",when:"Sunday lunch",price:45,shut:true}
+];
+const MEALS=[
+  {k:"breakfast",label:"Breakfast",items:[
+    {id:1,label:"Aloo paratha with curd",n:171},{id:2,label:"Idli sambar",n:143},
+    {id:3,label:"Bread omelette",n:118},{id:4,label:"Poha with sev",n:96}]},
+  {k:"lunch",label:"Lunch",items:[
+    {id:1,label:"Chole bhature",n:184},{id:2,label:"Rajma chawal",n:158},
+    {id:3,label:"Kadhi chawal",n:104},{id:4,label:"Paneer butter masala",n:167}]},
+  {k:"dinner",label:"Dinner",items:[
+    {id:1,label:"Veg biryani with raita",n:162},{id:2,label:"Masala dosa",n:126},
+    {id:3,label:"Dal makhani with naan",n:149},{id:4,label:"Egg curry",n:141}]}
+];
+const CRIT=[["quality","Food quality","Taste and freshness"],
+  ["quantity","Quantity","Enough served, and till closing"],
+  ["hygiene","Hygiene","Kitchen, counters and dining area"],
+  ["variety","Variety","Repetition across the week"]];
+
+const NOTICES=[
+ {id:1,type:"meeting",tag:"Open house",title:"Monthly open house — 8 September, 9 pm",
+  date:"2 Sep",by:"President",pin:true,
+  body:"Mess hall, ground floor. The Committee will report on every commitment: what was completed last month, what is pending and why. Bring anything you want raised — no agenda needed."},
+ {id:2,type:"minutes",tag:"Minutes",title:"HEC meeting minutes — 29 August",
+  date:"30 Aug",by:"President",pin:false,
+  body:"Present: all six office-bearers. Decisions: (1) handwash dispensers approved for all C-block washrooms, Maintenance Secretary to obtain quotations by 6 September. (2) Drain cleaning moved to a fortnightly schedule. (3) Study hall proposal to be taken to the Hall Office. Pending from July: lift generator connection, still awaiting Electrical Maintenance."},
+ {id:3,type:"maint",tag:"Maintenance",title:"Water supply off, B and C blocks, 4 September",
+  date:"1 Sep",by:"Hall Office",pin:false,
+  body:"Supply will be shut from 10 am to 2 pm for overhead tank cleaning. Please store what you need the night before. Washrooms on the ground floor stay in service."},
+ {id:4,type:"mess",tag:"Mess",title:"Dinner extended to 10:30 pm during mid-sems",
+  date:"31 Aug",by:"Mess Secretary",pin:false,
+  body:"From 8 to 16 September, dinner service runs until 10:30 pm for residents coming back late from the library or labs. Counters close at 10:15."},
+ {id:5,type:"result",tag:"Result",title:"August mess poll — result published",
+  date:"29 Aug",by:"President",pin:false,
+  body:"312 of 1033 residents responded. Hygiene scored lowest at 2.7 and has been raised with the contractor in writing. Chole bhature, aloo paratha and veg biryani have been added to the September menu."}
+];
+
+const S={auth:false,tab:"menu",drawer:false,pollTab:"vote",
+  picked:{breakfast:null,lunch:null,dinner:null},
+  chosen:null,qty:1,booked:null,
+  fb:{given:{},submitted:false},pollClosed:false,responses:214,
+  avg:{quality:3.1,quantity:3.6,hygiene:2.7,variety:2.9},
+  cases:[{ref:"H14-0331",txt:"Washroom drain choked, C-block 3rd floor",desk:"Maintenance",days:2,st:"prog",due:"4 Sep",img:null},
+         {ref:"H14-0327",txt:"Lift stopped during power cut",desk:"Hall Office",days:5,st:"done",due:"resolved 29 Aug",img:null}],
+  seq:332,filed:null,shot:null,openNotice:1,readIds:[]};
+
+const el=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const ICON={menu:"M4 5h16M4 12h16M4 19h10",poll:"M5 20V10M12 20V4M19 20v-7",
+  token:"M3 8h18v3a2 2 0 000 4v3H3v-3a2 2 0 000-4V8z",
+  help:"M12 3a9 9 0 100 18 9 9 0 000-18zm0 5v5m0 3.5v.5",
+  news:"M5 4h11l3 3v13H5zM9 9h7M9 13h7M9 17h4",
+  me:"M12 12a4 4 0 100-8 4 4 0 000 8zm-7 8a7 7 0 0114 0"};
+const PAGES=[{id:"menu",label:"Today's menu"},{id:"poll",label:"Monthly mess poll"},
+  {id:"token",label:"Special item token"},{id:"news",label:"Notices"},
+  {id:"help",label:"Complaints"},{id:"me",label:"My profile"}];
+const BOTTOM=["menu","poll","token","news","help"];
+const SHORT={menu:"Menu",poll:"Poll",token:"Token",news:"Notices",help:"Complaints",me:"Profile"};
+
+function toast(m){const t=el("toast");t.textContent=m;t.dataset.on="1";
+  clearTimeout(t._h);t._h=setTimeout(()=>t.dataset.on="0",2000);}
+function code(){const a="ACDEFHJKLMNPRTUVWXY349";let s="";
+  for(let i=0;i<4;i++)s+=a[Math.floor(Math.random()*a.length)];
+  return "H14-"+s+"-"+Math.floor(1000+Math.random()*9000);}
+function qrSVG(text,px){
+  const m=QR.encode(text,"M"), n=m.length, q=4, size=n+2*q;
+  let d="";
+  for(let r=0;r<n;r++)for(let c=0;c<n;c++) if(m[r][c]) d+=`M${c+q} ${r+q}h1v1h-1z`;
+  return `<svg viewBox="0 0 ${size} ${size}" width="${px}" height="${px}" shape-rendering="crispEdges" role="img" aria-label="Collection QR code"><rect width="${size}" height="${size}" fill="#fff"/><path d="${d}" fill="#14263B"/></svg>`;
+}
+function payload(t){return ["H14",t.roll,t.code,t.item,t.qty,"2026-09-03"].join("|");}
+function barcode(seed){let h=0;for(const c of seed)h=(h*31+c.charCodeAt(0))>>>0;let o="";
+  for(let i=0;i<38;i++){h=(h*1103515245+12345)>>>0;o+=`<i style="width:${1+(h>>16)%4}px"></i>`;}return o;}
+const votedCount=()=>MEALS.filter(m=>S.picked[m.k]).length;
+
+/* ---------------- MENU ---------------- */
+function menu(){return `<div class="page">
+  <h2>Today's menu</h2><p class="sub">Wednesday, 2 September</p><div class="gap"></div>
+  <div class="card meal"><div class="row"><span class="name">Breakfast</span><span class="time">7:30 – 9:30</span></div>
+    <div class="food">Poha, boiled eggs, bread and butter, tea and milk</div></div>
+  <div class="card meal"><div class="row"><span class="name">Lunch</span><span class="time">12:00 – 2:00</span></div>
+    <div class="food">Rajma, jeera rice, roti, salad, curd</div></div>
+  <div class="card meal"><div class="row"><span class="name">Evening snacks</span><span class="time">5:00 – 7:00</span></div>
+    <div class="food">Samosa, tea</div></div>
+  <div class="card meal"><div class="row"><span class="name">Dinner</span><span class="time">8:00 – 10:00</span></div>
+    <div class="food">Mixed vegetable, dal tadka, roti, rice, gulab jamun</div></div>
+  <div class="secline"><b>Reserve a special item</b><i></i></div>
+  <p class="sub" style="margin-top:-4px;margin-bottom:11px">Pick what you want and get a token. Register a day ahead.</p>
+  ${SPECIALS.map(s=>spBtn(s)).join("")}</div>`;}
+
+const spBtn=s=>`<button class="sp" data-pick="${s.id}" data-shut="${s.shut?1:0}" ${s.shut?"disabled":""}>
+  <div class="r1"><span class="nm">${esc(s.name)}</span><span class="pr">&#8377;${s.price}</span></div>
+  <div class="r2"><span class="wh">${esc(s.when)}</span>
+    <span class="cl">${s.shut?"Registration closed":"Closes 9 pm today"}</span></div></button>`;
+
+/* ---------------- POLL ---------------- */
+function poll(){return `<div class="page"><h2>Monthly mess poll</h2>
+  <p class="sub">September cycle. Closes 5 September, 11:59 pm.</p><div class="gap"></div>
+  <div class="seg">${[["vote","Menu vote"],["fb","Feedback"],["res","Results"]].map(([k,l])=>
+    `<button data-ptab="${k}" data-on="${S.pollTab===k?1:0}">${l}</button>`).join("")}</div>
+  ${({vote:pVote,fb:pFb,res:pRes})[S.pollTab]()}</div>`;}
+
+function pVote(){
+  const n=votedCount();
+  const head = n===3
+    ? `<div class="recorded"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+        <div><div class="rt">All three votes are recorded</div>
+        <div class="rd">One dish each for breakfast, lunch and dinner. You can change them until the poll closes.</div></div></div>`
+    : `<div class="progress">Pick one dish for each meal. <b>${n} of 3 recorded.</b> The most-voted dish in each meal is added to next month's menu.</div>`;
+  return head + MEALS.map(m=>{
+    const top=Math.max(...m.items.map(i=>i.n)), done=!!S.picked[m.k];
+    return `<div class="mealhead"><b>${m.label}</b>
+      <span data-done="${done?1:0}">${done?"Voted":"Not voted"}</span></div>
+      ${m.items.map(i=>`
+        <button class="dish" data-meal="${m.k}" data-vote="${i.id}" data-picked="${S.picked[m.k]===i.id?1:0}">
+          <div class="head"><span class="label">${esc(i.label)}</span><span class="count">${i.n}</span></div>
+          <div class="bar"><i style="width:${Math.round(i.n/top*100)}%"></i></div>
+        </button>`).join("")}`;
+  }).join("");
+}
+
+function pFb(){
+  if(S.fb.submitted) return `
+    <div class="recorded"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+      <div><div class="rt">Your feedback is recorded</div>
+      <div class="rd">Averages stay sealed until the poll closes, so early ratings cannot sway later ones.</div></div></div>
+    <button class="btn ghost" data-refb="1">Change my rating</button>`;
+  const done=CRIT.every(([k])=>S.fb.given[k]);
+  return `<p class="sub" style="margin-bottom:12px">Rate last month's mess. The result goes to the contractor and the Hall Office.</p>
+  ${CRIT.map(([k,name,hint])=>`<div class="crit"><div class="cname">${name}</div><div class="chint">${hint}</div>
+    <div class="scale">${[1,2,3,4,5].map(n=>
+      `<button data-rate="${k}" data-n="${n}" data-on="${S.fb.given[k]===n?1:0}">${n}</button>`).join("")}</div>
+    <div class="scalekey"><span>Poor</span><span>Very good</span></div></div>`).join("")}
+  <button class="btn" data-fb="1" ${done?"":"disabled"}>${done?"Submit feedback":"Rate all four to submit"}</button>`;
+}
+
+function pRes(){
+  if(!S.pollClosed) return `
+    <div class="locked">
+      <svg viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>
+      <div class="lt">Results open when the poll closes</div>
+      <div class="ld">Sealed until 5 September, 11:59 pm, so nobody can see the standings and vote strategically.</div>
+      <div class="counter"><div><b>2</b><span>days</span></div><div><b>14</b><span>hours</span></div><div><b>08</b><span>min</span></div></div>
+    </div>
+    <p class="sub" style="margin-top:12px">${S.responses} of 1033 residents have responded so far.</p>
+    <div class="gap"></div>
+    <button class="btn ghost sm" data-close="1">Preview the published result (demo)</button>`;
+  const link="hall14.iitk.ac.in/poll/september";
+  return MEALS.map(m=>{
+    const sorted=[...m.items].sort((a,b)=>b.n-a.n), w=sorted[0];
+    const tot=m.items.reduce((a,b)=>a+b.n,0);
+    return `<div class="secline"><b>${m.label}</b><i></i></div>
+      <div class="winner"><div class="wl">Added to next month's menu</div>
+        <div class="wn">${esc(w.label)}</div><div class="wv">${w.n} of ${tot} votes</div></div>
+      ${sorted.slice(1).map(i=>`<div class="res"><div class="rtop">
+        <span class="rname">${esc(i.label)}</span><span class="rnum">${i.n}</span></div>
+        <div class="bar"><i style="width:${Math.round(i.n/w.n*100)}%"></i></div></div>`).join("")}`;
+  }).join("") + `
+  <div class="secline"><b>Mess feedback</b><i></i></div>
+  ${CRIT.map(([k,name])=>`<div class="res"><div class="rtop"><span class="rname">${name}</span>
+    <span class="rnum">${S.avg[k].toFixed(1)}</span></div>
+    <div class="bar"><i style="width:${S.avg[k]/5*100}%"></i></div></div>`).join("")}
+  <p class="sub">Final: ${S.responses} of 1033 residents responded. Sent to the mess contractor and the Hall Office.</p>
+  <div class="share"><div class="stitle">Share the result</div>
+    <div class="stext">Published results carry weight only if the hall sees them.</div>
+    <div class="linkrow"><input value="${link}" readonly aria-label="Result link"><button data-copy="1">Copy</button></div>
+    <div class="shrow"><button data-share="WhatsApp">WhatsApp</button><button data-share="hall group">Hall group</button></div></div>
+  <div class="gap"></div>
+  <button class="btn ghost sm" data-reopen="1">Back to the open poll (demo)</button>`;
+}
+
+/* ---------------- TOKEN ---------------- */
+function token(){
+  if(S.booked){
+    const t=S.booked,dead=t.status==="used";
+    return `<div class="page"><h2>${dead?"Token used":"Your collection token"}</h2>
+    <p class="sub">${dead?"This token is void and cannot be used again.":"Show this at the counter. It works once."}</p>
+    <div class="gap"></div>
+    <div class="token" data-void="${dead?1:0}">${dead?'<div class="stamp">USED</div>':''}
+      <div class="k">${esc(t.when)} &nbsp;·&nbsp; Mess, gate 2</div>
+      <div class="item">${esc(t.item)} &times; ${t.qty}</div>
+      <div class="code">${esc(t.code)}</div><div class="codelab">Token number</div>
+      <div class="qrbox">${qrSVG(payload(t),132)}</div>
+      <div class="strip"><div><span>Roll number</span><b class="m">${esc(t.roll)}</b></div>
+        <div style="text-align:right"><span>${dead?"Collected":"Amount"}</span>
+        <b class="m">${dead?esc(t.at):"&#8377;"+t.price*t.qty}</b></div></div></div>
+    ${dead?`<div class="voidline">Scanned at the counter at ${esc(t.at)}. One token, one plate — a used number cannot be shown again, and another plate needs a fresh reservation.</div>
+      <div class="gap"></div><button class="btn" data-again="1">Reserve something else</button>`
+     :`<p class="showline">The counter scans this QR. It carries roll number, token, item and quantity as plain text, so the existing mess scanner can log it straight into the sheet — and the token goes void the moment it is scanned.</p>
+      <div class="gap"></div><button class="btn scan" data-scan="1">Scan at counter (demo)</button>
+      <button class="btn ghost" data-cancel="1">Cancel reservation</button>`}</div>`;
+  }
+  if(!S.chosen) return `<div class="page"><h2>Reserve a special item</h2>
+    <p class="sub">Choose what you want. Registration closes at 9 pm the day before.</p><div class="gap"></div>
+    ${SPECIALS.map(s=>spBtn(s)).join("")}
+    <div class="compare">
+      <div class="now"><b>Now:</b> write your name and a serial number on a sheet, remember the number, then wait while a volunteer finds it and strikes it off.</div>
+      <div class="then"><b>With the portal:</b> pick an item, get a token number. It is scanned once at the counter and goes void, so no one collects twice.</div>
+    </div></div>`;
+  const c=SPECIALS.find(s=>s.id===S.chosen);
+  return `<div class="page"><h2>Confirm your reservation</h2>
+    <p class="sub">Check the details, then get your token.</p><div class="gap"></div>
+    <div class="pickbar"><div class="pl">Selected</div><div class="pn">${esc(c.name)}</div>
+      <div class="pw">${esc(c.when)} &nbsp;·&nbsp; &#8377;${c.price} per plate</div></div>
+    <div class="qty"><button data-q="-1" aria-label="Reduce quantity">&minus;</button>
+      <span class="n">${S.qty}</span><button data-q="1" aria-label="Increase quantity">+</button>
+      <span class="lab">plate${S.qty>1?"s":""} &nbsp;·&nbsp; &#8377;${c.price*S.qty} total</span></div>
+    <div class="gap"></div><button class="btn" data-book="1">Reserve and get token</button>
+    <button class="btn ghost" data-unpick="1">Choose a different item</button></div>`;
+}
+
+/* ---------------- PROFILE ---------------- */
+function me(){
+  const open=S.cases.filter(c=>c.st!=="done").length;
+  return `<div class="page">
+  <div class="phead"><div class="pav">UT</div>
+    <div><div class="pn2">${esc(ME.name)}</div><div class="pr2">${esc(ME.roll)}</div></div></div>
+  <div class="stat">
+    <div><b>${votedCount()}/3</b><span>menu votes this cycle</span></div>
+    <div><b>${S.cases.length}</b><span>complaints filed</span></div>
+    <div><b>${open}</b><span>still open</span></div>
+  </div>
+  <div class="secline"><b>Hall</b><i></i></div>
+  <div class="rows">
+    <div class="r"><span>Room</span><b class="m">${esc(ME.room)}</b></div>
+    <div class="r"><span>Location</span><b>${esc(ME.block)}</b></div>
+    <div class="r"><span>Resident since</span><b>${esc(ME.joined)}</b></div>
+    <div class="r"><span>Mess preference</span><b>${esc(ME.mess)}</b></div>
+  </div>
+  <div class="secline"><b>Academic</b><i></i></div>
+  <div class="rows">
+    <div class="r"><span>Programme</span><b>${esc(ME.prog)}</b></div>
+    <div class="r"><span>Department</span><b>${esc(ME.dept)}</b></div>
+    <div class="r"><span>Roll number</span><b class="m">${esc(ME.roll)}</b></div>
+  </div>
+  <div class="secline"><b>Contact</b><i></i></div>
+  <div class="rows">
+    <div class="r"><span>Institute email</span><b>${esc(ME.email)}</b></div>
+    <div class="r"><span>Phone</span><b class="m">${esc(ME.phone)}</b></div>
+  </div>
+  <p class="sub">Details come from the institute record. Raise a request at the Hall Office to correct anything here.</p>
+  <div class="gap"></div>
+  <button class="btn red" data-out="1">Sign out</button></div>`;
+}
+
+/* ---------------- COMPLAINTS ---------------- */
+function help(){
+  const P={open:["open","Raised"],prog:["prog","In progress"],done:["done","Resolved"]};
+  return `<div class="page"><h2>Complaints</h2>
+  <p class="sub">Every complaint gets a reference number, a deadline and a status you can check.</p><div class="gap"></div>
+  ${S.filed?`<div class="done-note">Logged as <span class="ref">${S.filed}</span>. Sent to the Maintenance desk with a 48-hour response deadline.</div>`:""}
+  <div class="field"><label for="cat">What is it about</label>
+    <select id="cat"><option>Washroom or drainage</option><option>Lift</option><option>Water cooler</option>
+    <option>Electrical or lighting</option><option>Mess</option><option>Pest or cleanliness</option></select></div>
+  <div class="field"><label for="loc">Where</label>
+    <input class="f" id="loc" placeholder="Block and floor, e.g. C-block, 3rd floor"></div>
+  <div class="field"><label for="det">Details</label>
+    <textarea id="det" placeholder="Describe the problem in a line or two"></textarea></div>
+  <div class="field"><label>Photo <span class="opt">— optional, but it speeds up the repair</span></label>
+    ${S.shot?`<div class="shot"><img src="${S.shot}" alt="Attached photo">
+      <button data-rmshot="1" aria-label="Remove photo">&times;</button></div>`
+     :`<label class="drop"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="14" rx="2"/>
+        <circle cx="12" cy="13" r="3.2"/><path d="M8 6l1.4-2h5.2L16 6"/></svg>
+        <div class="dt">Add a photo</div><div class="dd">Camera or gallery</div>
+        <input type="file" accept="image/*" id="shotin"></label>`}</div>
+  <button class="btn" data-file="1">File complaint</button>
+  <div class="gap"></div><h2 style="font-size:15px">Your complaints</h2><div class="gap" style="height:9px"></div>
+  ${S.cases.map(c=>`<div class="case">
+    <div class="top-row"><span class="ref">${c.ref}</span><span class="pill ${P[c.st][0]}">${P[c.st][1]}</span></div>
+    <div class="txt">${esc(c.txt)}</div>
+    ${c.img?`<img class="thumb" src="${c.img}" alt="Complaint photo">`:""}
+    <div class="meta">${c.desk} desk &nbsp;·&nbsp; raised ${c.days} day${c.days>1?"s":""} ago &nbsp;·&nbsp; ${c.st==="done"?c.due:"due "+c.due}</div>
+  </div>`).join("")}</div>`;
+}
+
+function news(){
+  const T={meeting:["nt-meet"],minutes:["nt-min"],maint:["nt-maint"],mess:["nt-mess"],result:["nt-res"]};
+  const list=[...NOTICES].sort((a,b)=>(b.pin?1:0)-(a.pin?1:0));
+  const unread=NOTICES.filter(x=>!S.readIds.includes(x.id)).length;
+  return `<div class="page">
+  <h2>Notices</h2>
+  <p class="sub">${unread?unread+" unread. ":""}Committee minutes, open house dates and anything that affects the hall.</p>
+  <div class="gap"></div>
+  ${list.map(x=>{
+    const open=S.openNotice===x.id, read=S.readIds.includes(x.id);
+    return `<button class="nc" data-notice="${x.id}" data-open="${open?1:0}">
+      <div class="nrow">
+        <span class="ntag ${T[x.type][0]}">${x.tag}</span>
+        ${x.pin?'<span class="npin">Pinned</span>':''}
+        ${!read?'<span class="ndot" aria-label="unread"></span>':''}
+        <span class="ndate">${x.date}</span>
+      </div>
+      <div class="ntitle">${esc(x.title)}</div>
+      <div class="nbody" ${open?'':'hidden'}>${esc(x.body)}</div>
+      <div class="nby">${esc(x.by)}${open?"":" &nbsp;·&nbsp; tap to read"}</div>
+    </button>`;}).join("")}
+  <p class="sub" style="margin-top:12px">Every notice stays here permanently, so nothing depends on catching a message in a group.</p>
+  </div>`;
+}
+
+const VIEW={menu,poll,token,news,help,me};
+function draw(){
+  el("screen").innerHTML=VIEW[S.tab]();
+  el("nav").innerHTML=BOTTOM.map(id=>`
+    <button data-tab="${id}" data-on="${S.tab===id?1:0}" aria-label="${SHORT[id]}">
+      <svg viewBox="0 0 24 24"><path d="${ICON[id]}"/></svg>${SHORT[id]}</button>`).join("");
+  el("ditems").innerHTML=PAGES.map(p=>`
+    <button data-tab="${p.id}" data-on="${S.tab===p.id?1:0}">
+      <svg viewBox="0 0 24 24"><path d="${ICON[p.id]}"/></svg>${p.label}
+      ${p.id==="poll"&&votedCount()<3?'<span class="tag">open</span>':''}${p.id==="news"&&NOTICES.some(x=>!S.readIds.includes(x.id))?'<span class="tag">'+NOTICES.filter(x=>!S.readIds.includes(x.id)).length+'</span>':''}</button>`).join("");
+  el("drawer").dataset.open=S.drawer?1:0;
+  el("scrim").dataset.open=S.drawer?1:0;
+  const fi=el("shotin");
+  if(fi) fi.addEventListener("change",e=>{const f=e.target.files[0];if(!f)return;
+    const r=new FileReader();r.onload=()=>{S.shot=r.result;toast("Photo attached");draw();};r.readAsDataURL(f);});
+}
+
+let LMODE="signin";
+function drawLogin(){
+  const b=el("lbody");
+  if(LMODE==="signin"){
+    b.innerHTML=`<h1>Hall 14 Portal</h1>
+      <div class="tag">Mess, maintenance and hall services, in one place.</div>
+      <div class="lform">
+        <div class="lf"><label for="lroll">Roll number</label>
+          <input class="mono" id="lroll" value="261110071" inputmode="numeric" autocomplete="off"></div>
+        <div class="lf"><label for="lpw">Password</label>
+          <input type="password" id="lpw" value="••••••••" autocomplete="off"></div>
+        <button class="lbtn" data-signin="1">Sign in</button>
+      </div>
+      <div class="lswap">First time here? <button data-mode="register">Create an account</button></div>
+      <div class="lnote">Your password is the one you set when you register. Nothing is shared with the mess or the Hall Office.</div>`;
+  } else if(LMODE==="register"){
+    b.innerHTML=`<button class="lback" data-mode="signin">&larr; Back to sign in</button>
+      <h1 style="margin-top:14px">Create your account</h1>
+      <div class="tag">One account per resident, verified against your institute email.</div>
+      <div class="lform">
+        <div class="lf"><label for="rroll">Roll number</label>
+          <input class="mono" id="rroll" value="261110071" inputmode="numeric" autocomplete="off"></div>
+        <div class="lf"><label for="rname">Full name</label>
+          <input id="rname" value="Umesh Tupdale" autocomplete="off"></div>
+        <div class="lf"><label for="rroom">Room number</label>
+          <input id="rroom" value="C-402" autocomplete="off"></div>
+        <div class="lf"><label for="rpw">Set a password</label>
+          <input type="password" id="rpw" value="••••••••" autocomplete="off"></div>
+        <button class="lbtn" data-toOtp="1">Send verification code</button>
+      </div>
+      <div class="lnote">A six-digit code goes to umesht26@iitk.ac.in. Only a resident with an institute email can register, so nobody can create an account for someone else.</div>`;
+  } else {
+    b.innerHTML=`<button class="lback" data-mode="register">&larr; Back</button>
+      <h1 style="margin-top:14px">Check your email</h1>
+      <div class="tag">We sent a six-digit code to umesht26@iitk.ac.in.</div>
+      <div class="lform">
+        <div class="lf"><label>Verification code</label>
+          <div class="otp">
+            <input class="mono" value="2" maxlength="1" inputmode="numeric" aria-label="digit 1">
+            <input class="mono" value="0" maxlength="1" inputmode="numeric" aria-label="digit 2">
+            <input class="mono" value="4" maxlength="1" inputmode="numeric" aria-label="digit 3">
+            <input class="mono" value="8" maxlength="1" inputmode="numeric" aria-label="digit 4">
+            <input class="mono" value="1" maxlength="1" inputmode="numeric" aria-label="digit 5">
+            <input class="mono" value="5" maxlength="1" inputmode="numeric" aria-label="digit 6">
+          </div>
+          <div class="lhint">Code expires in 9:42. Didn't get it? Check spam, or resend.</div>
+        </div>
+        <button class="lbtn" data-signin="1">Verify and continue</button>
+      </div>
+      <div class="lnote">After this you sign in with your roll number and password. Registration happens once.</div>`;
+  }
+}
+function enterApp(){
+  el("login").dataset.out="1";
+  setTimeout(()=>{el("login").style.display="none";toast("Signed in");},340);
+}
+document.addEventListener("click",e=>{
+  const t=e.target.closest("button"); if(!t) return;
+  if(t.dataset.mode){LMODE=t.dataset.mode;return drawLogin();}
+  if(t.dataset.toOtp){LMODE="otp";return drawLogin();}
+  if(t.dataset.signin){return enterApp();}
+});
+drawLogin();
+
+const _unused=(()=>{
+})();
+el("burger").addEventListener("click",()=>{S.drawer=!S.drawer;draw();});
+el("avatar").addEventListener("click",()=>{S.tab="me";S.drawer=false;el("screen").scrollTop=0;draw();});
+el("scrim").addEventListener("click",()=>{S.drawer=false;draw();});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&S.drawer){S.drawer=false;draw();}});
+
+document.addEventListener("click",e=>{
+  const t=e.target.closest("button"); if(!t||t.disabled) return;
+  const d=t.dataset, top=()=>el("screen").scrollTop=0;
+
+  if(d.out){ LMODE="signin"; drawLogin();
+    el("login").style.display="flex";
+    requestAnimationFrame(()=>el("login").dataset.out="0");
+    S.tab="menu"; draw(); return; }
+
+  if(d.tab){S.tab=d.tab;S.drawer=false;top();return draw();}
+  if(d.ptab){S.pollTab=d.ptab;top();return draw();}
+  if(d.notice){const id=+d.notice;
+    S.openNotice = S.openNotice===id ? null : id;
+    if(!S.readIds.includes(id))S.readIds.push(id);
+    return draw();}
+  if(d.pick){S.chosen=+d.pick;S.qty=1;S.tab="token";top();return draw();}
+  if(d.unpick){S.chosen=null;return draw();}
+  if(d.q){S.qty=Math.min(3,Math.max(1,S.qty+(+d.q)));return draw();}
+  if(d.book){const c=SPECIALS.find(s=>s.id===S.chosen);
+    S.booked={item:c.name,when:c.when,price:c.price,qty:S.qty,code:code(),status:"valid",roll:ME.roll};
+    top();toast("Token issued");return draw();}
+  if(d.scan){S.booked.status="used";S.booked.at="8:42 pm";top();toast("Scanned — token is now void");return draw();}
+  if(d.cancel){S.booked=null;S.chosen=null;S.qty=1;toast("Reservation cancelled");return draw();}
+  if(d.again){S.booked=null;S.chosen=null;S.qty=1;return draw();}
+
+  if(d.vote){
+    const mk=d.meal, id=+d.vote, m=MEALS.find(x=>x.k===mk);
+    if(S.picked[mk]===id) return;
+    if(S.picked[mk]) m.items.find(i=>i.id===S.picked[mk]).n--;
+    m.items.find(i=>i.id===id).n++; S.picked[mk]=id;
+    toast(m.label+" vote recorded"); return draw();
+  }
+  if(d.rate){S.fb.given[d.rate]=+d.n;return draw();}
+  if(d.fb){CRIT.forEach(([k])=>{const g=S.fb.given[k],r=S.responses;
+      S.avg[k]=+(((S.avg[k]*r)+g)/(r+1)).toFixed(2);});
+    S.responses++;S.fb.submitted=true;top();toast("Feedback recorded");return draw();}
+  if(d.refb){S.fb.submitted=false;return draw();}
+  if(d.close){S.pollClosed=true;top();return draw();}
+  if(d.reopen){S.pollClosed=false;top();return draw();}
+  if(d.copy){toast("Link copied");return;}
+  if(d.share){toast("Shared to "+d.share);return;}
+  if(d.rmshot){S.shot=null;return draw();}
+
+  if(d.file){
+    const loc=el("loc").value.trim(), det=el("det").value.trim();
+    if(!loc||!det){(loc?el("det"):el("loc")).focus();return;}
+    const ref="H14-0"+(S.seq++);
+    S.cases.unshift({ref,txt:det.slice(0,64),desk:"Maintenance",days:1,st:"open",due:"4 Sep",img:S.shot});
+    S.filed=ref;S.shot=null;top();toast("Complaint filed");return draw();
+  }
+});
+
+draw();
+</script>
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("/sw.js");
+}
+</script>
+</body>
+</html>
