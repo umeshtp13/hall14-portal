@@ -2,423 +2,284 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Hall 14 Portal — working prototype</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Hall 14 Portal</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --ink:#14263B; --ink-2:#1E3A5A; --slate:#5A6B82; --slate-2:#8492A6;
-  --line:#DDE4EC; --wash:#EEF2F6; --surface:#FFFFFF;
-  --brass:#C79A2B; --brass-deep:#8A6612; --brass-wash:#FBF3DC;
-  --green:#177A57; --green-wash:#E4F2EC;
-  --red:#B23A2E; --red-wash:#FBEBE9;
-  --ease:cubic-bezier(.22,.72,.28,1);
+  --bg:#16181D; --sf:#1F232A; --sf2:#262B33; --line:#2E343D;
+  --tx:#E8EAEE; --mu:#9AA3B2; --dim:#6E7787;
+  --am:#F0A93B; --am2:#D98518; --onam:#241802;
+  --gr:#3DD68C; --grd:#12291F; --rd:#FF6B5E; --rdd:#2E1917;
+  --ez:cubic-bezier(.22,.72,.28,1);
 }
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:"IBM Plex Sans",system-ui,sans-serif;background:var(--wash);color:var(--ink);
+body{font-family:"Space Grotesk",system-ui,sans-serif;background:#0E1013;color:var(--tx);
   -webkit-font-smoothing:antialiased;display:flex;flex-direction:column;align-items:center;padding:20px 14px 34px;}
-.intro{max-width:430px;width:100%;margin-bottom:16px;}
-.intro h1{font-size:19px;font-weight:700;letter-spacing:-.015em;}
-.intro p{margin-top:6px;font-size:13.5px;line-height:1.5;color:var(--slate);}
+.intro{max-width:430px;width:100%;margin-bottom:14px;}
+.intro h1{font-size:19px;font-weight:700;letter-spacing:-.02em;}
+.intro p{margin-top:6px;font-size:13px;line-height:1.5;color:var(--mu);}
+.phone{width:100%;max-width:430px;background:var(--bg);border-radius:26px;overflow:hidden;
+  box-shadow:0 20px 50px -16px rgba(0,0,0,.7);display:flex;flex-direction:column;height:800px;position:relative;}
 
-.phone{width:100%;max-width:430px;background:var(--surface);border-radius:26px;overflow:hidden;
-  box-shadow:0 1px 2px rgba(20,38,59,.10),0 18px 44px -14px rgba(20,38,59,.30);
-  display:flex;flex-direction:column;height:790px;position:relative;}
-
-/* ---------- login ---------- */
-.login{position:absolute;inset:0;background:var(--ink);color:#fff;z-index:20;
-  display:flex;flex-direction:column;justify-content:center;padding:34px 26px;
-  transition:opacity .34s var(--ease),transform .34s var(--ease);}
+/* login */
+.login{position:absolute;inset:0;background:var(--bg);z-index:20;display:flex;flex-direction:column;
+  justify-content:center;padding:32px 26px;transition:opacity .34s var(--ez),transform .34s var(--ez);}
 .login[data-out="1"]{opacity:0;transform:scale(1.03);pointer-events:none;}
-.crest{width:46px;height:46px;border-radius:12px;background:var(--brass);color:#2A1F04;
-  display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:700;letter-spacing:-.02em;}
-.login h1{margin-top:20px;font-size:27px;font-weight:700;letter-spacing:-.025em;line-height:1.15;}
-.login .tag{margin-top:7px;font-size:13.5px;color:#9FB4CC;line-height:1.5;}
-.lform{margin-top:28px;}
-.lf{margin-bottom:13px;}
-.lf label{display:block;font-size:12px;font-weight:600;color:#9FB4CC;margin-bottom:6px;}
-.lf input{width:100%;font:inherit;font-size:15px;padding:12px 13px;border-radius:11px;color:#fff;
-  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);
-  transition:border-color .16s var(--ease),background .16s var(--ease);}
-.lf input::placeholder{color:#6E85A0;}
-.lf input:focus{outline:none;border-color:var(--brass);background:rgba(255,255,255,.12);}
-.lf input.mono{font-family:"IBM Plex Mono",monospace;letter-spacing:.03em;}
-.lbtn{width:100%;padding:13px;border:none;border-radius:11px;background:var(--brass);color:#2A1F04;
-  font:inherit;font-size:15px;font-weight:700;cursor:pointer;margin-top:6px;
-  transition:background .16s var(--ease),transform .12s var(--ease);}
-.lbtn:hover{background:#D8A932;}
+.crest{width:46px;height:46px;border-radius:13px;background:var(--am);color:var(--onam);display:flex;
+  align-items:center;justify-content:center;font-size:16px;font-weight:700;letter-spacing:-.02em;}
+.login h1{margin-top:19px;font-size:26px;font-weight:700;letter-spacing:-.03em;line-height:1.15;}
+.login .tag{margin-top:7px;font-size:13px;color:var(--mu);line-height:1.5;}
+.lf{margin-bottom:12px;}
+.lf label{display:block;font-size:11.5px;font-weight:600;color:var(--dim);margin-bottom:6px;
+  letter-spacing:.04em;text-transform:uppercase;}
+.lf input{width:100%;font:inherit;font-size:15px;padding:12px 13px;border-radius:11px;color:var(--tx);
+  background:var(--sf);border:1px solid var(--line);transition:border-color .16s var(--ez);}
+.lf input:focus{outline:none;border-color:var(--am);}
+.lf input.m{font-family:"IBM Plex Mono",monospace;letter-spacing:.04em;}
+.lform{margin-top:24px;}
+.lbtn{width:100%;padding:13px;border:none;border-radius:11px;background:var(--am);color:var(--onam);
+  font:inherit;font-size:15px;font-weight:700;cursor:pointer;margin-top:6px;transition:transform .12s var(--ez);}
 .lbtn:active{transform:scale(.985);}
-.lbtn:focus-visible{outline:2px solid #fff;outline-offset:2px;}
-.lnote{margin-top:18px;font-size:11.5px;color:#6E85A0;line-height:1.55;text-align:center;}
-.lswap{margin-top:15px;text-align:center;font-size:13px;color:#9FB4CC;}
-.lswap button{background:none;border:none;font:inherit;font-size:13px;font-weight:600;
-  color:var(--brass);cursor:pointer;padding:2px 4px;}
-.lswap button:hover{text-decoration:underline;}
-.lback{background:none;border:none;color:#9FB4CC;font:inherit;font-size:13px;cursor:pointer;
-  padding:4px 0;display:flex;align-items:center;gap:6px;}
-.lback:hover{color:#fff;}
-.lerr{margin-top:10px;font-size:12px;color:#F0A8A0;}
-.otp{display:flex;gap:8px;margin-top:6px;}
-.otp input{flex:1;text-align:center;font-family:"IBM Plex Mono",monospace;font-size:19px;
-  font-weight:600;padding:12px 0;border-radius:11px;color:#fff;
-  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);}
-.otp input:focus{outline:none;border-color:var(--brass);}
-.lhint{margin-top:9px;font-size:12px;color:#9FB4CC;line-height:1.5;}
-.lswap{margin-top:16px;text-align:center;font-size:13px;color:#9FB4CC;}
-.lswap button{background:none;border:none;color:var(--brass);font:inherit;font-size:13px;font-weight:600;
-  cursor:pointer;padding:2px 4px;border-radius:5px;}
-.lswap button:hover{text-decoration:underline;}
-.lswap button:focus-visible{outline:2px solid var(--brass);outline-offset:1px;}
-.lback{background:none;border:none;color:#9FB4CC;font:inherit;font-size:13px;cursor:pointer;
-  display:flex;align-items:center;gap:6px;padding:4px 0;margin-bottom:4px;}
-.lback:hover{color:#fff;}
-.lback svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
-.steps{display:flex;gap:5px;margin-top:16px;}
-.steps i{flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.16);display:block;}
-.steps i[data-on="1"]{background:var(--brass);}
-.lhint{margin-top:7px;font-size:12px;color:#6E85A0;line-height:1.5;}
-.otp{font-family:"IBM Plex Mono",monospace!important;font-size:24px!important;letter-spacing:.36em;
-  text-align:center;padding:13px 10px!important;}
-.demo{margin-top:11px;background:rgba(199,154,43,.14);border:1px solid rgba(199,154,43,.34);
-  border-radius:10px;padding:9px 11px;font-size:12px;color:#E8CE86;line-height:1.5;}
-.demo b{font-family:"IBM Plex Mono",monospace;letter-spacing:.12em;color:var(--brass);}
-.lerr{margin-top:9px;font-size:12.5px;color:#F2A9A0;}
+.lnote{margin-top:16px;font-size:11.5px;color:var(--dim);line-height:1.55;text-align:center;}
+.lswap{margin-top:14px;text-align:center;font-size:13px;color:var(--mu);}
+.lswap button{background:none;border:none;font:inherit;font-weight:600;color:var(--am);cursor:pointer;}
+.lback{background:none;border:none;color:var(--mu);font:inherit;font-size:13px;cursor:pointer;padding:4px 0;}
+.otp{display:flex;gap:7px;}
+.otp input{flex:1;text-align:center;font-family:"IBM Plex Mono",monospace;font-size:18px;font-weight:600;
+  padding:12px 0;border-radius:10px;color:var(--tx);background:var(--sf);border:1px solid var(--line);}
 
-/* ---------- top ---------- */
-.top{background:var(--ink);color:#fff;padding:13px 14px;flex:none;display:flex;align-items:center;gap:11px;}
-.burger{background:none;border:none;padding:5px;cursor:pointer;color:#fff;display:flex;border-radius:8px;
-  transition:background .16s var(--ease);}
-.burger:hover{background:rgba(255,255,255,.13);}
-.burger:active{transform:scale(.93);}
-.burger:focus-visible{outline:2px solid var(--brass);outline-offset:1px;}
-.burger svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;}
-.top .hall{font-size:15px;font-weight:600;letter-spacing:-.01em;}
-.top .who{margin-top:2px;font-size:12.5px;color:#9FB4CC;display:flex;gap:7px;}
-.top .who .roll{font-family:"IBM Plex Mono",monospace;font-weight:500;}
-.av{margin-left:auto;width:34px;height:34px;border-radius:50%;background:var(--brass);color:#2A1F04;
-  border:none;font:inherit;font-size:12.5px;font-weight:700;cursor:pointer;letter-spacing:.02em;
-  transition:transform .14s var(--ease);}
-.av:hover{transform:scale(1.06);}
-.av:focus-visible{outline:2px solid #fff;outline-offset:2px;}
-
-/* ---------- drawer ---------- */
-.scrim{position:absolute;inset:0;background:rgba(11,22,36,.5);opacity:0;pointer-events:none;
-  transition:opacity .24s var(--ease);z-index:8;}
-.scrim[data-open="1"]{opacity:1;pointer-events:auto;}
-.drawer{position:absolute;top:0;bottom:0;left:0;width:272px;background:var(--surface);z-index:9;
-  transform:translateX(-100%);transition:transform .3s var(--ease);
-  display:flex;flex-direction:column;box-shadow:2px 0 28px rgba(20,38,59,.2);}
-.drawer[data-open="1"]{transform:translateX(0);}
-.drawer .dhead{background:var(--ink);color:#fff;padding:17px 16px 16px;}
-.drawer .dhead .n{font-size:15px;font-weight:600;}
-.drawer .dhead .r{margin-top:3px;font-size:12.5px;color:#9FB4CC;font-family:"IBM Plex Mono",monospace;}
-.drawer .items{padding:9px 0;flex:1;overflow-y:auto;}
-.drawer .items button{width:100%;display:flex;align-items:center;gap:11px;padding:11px 16px;border:none;
-  background:none;font:inherit;font-size:14px;color:var(--ink);cursor:pointer;text-align:left;
-  transition:background .14s var(--ease);}
-.drawer .items button:hover{background:var(--wash);}
-.drawer .items button[data-on="1"]{background:var(--brass-wash);color:var(--brass-deep);font-weight:600;
-  box-shadow:inset 3px 0 0 var(--brass);}
-.drawer .items svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.7;
-  stroke-linecap:round;stroke-linejoin:round;flex:none;}
-.drawer .items .tag{margin-left:auto;font-size:11px;font-weight:600;background:var(--red);color:#fff;
-  border-radius:20px;padding:1px 7px;}
-.drawer .dfoot{padding:13px 16px;border-top:1px solid var(--line);font-size:11.5px;color:var(--slate);line-height:1.5;}
-
-.screen{flex:1;overflow-y:auto;padding:18px 18px 26px;scroll-behavior:smooth;}
-.page{animation:rise .3s var(--ease) both;}
-@keyframes rise{from{opacity:0;transform:translateY(7px);}to{opacity:1;transform:none;}}
-h2{font-size:17px;font-weight:700;letter-spacing:-.015em;}
-.sub{margin-top:3px;font-size:13px;color:var(--slate);line-height:1.45;}
-.gap{height:16px;}
-.card{border:1px solid var(--line);border-radius:13px;padding:13px 14px;margin-bottom:9px;}
-.meal .row{display:flex;justify-content:space-between;align-items:baseline;gap:10px;}
-.meal .name{font-size:14px;font-weight:600;}
-.meal .time{font-size:12px;color:var(--slate);font-variant-numeric:tabular-nums;}
-.meal .food{margin-top:5px;font-size:13px;color:var(--slate);line-height:1.5;}
-.secline{display:flex;align-items:center;gap:10px;margin:20px 0 12px;}
-.secline b{font-size:14px;font-weight:700;letter-spacing:-.01em;white-space:nowrap;}
-.secline i{flex:1;height:1px;background:var(--line);display:block;}
-
-/* ---------- specials ---------- */
-.sp{width:100%;text-align:left;font:inherit;color:inherit;background:var(--surface);cursor:pointer;
-  border:1px solid var(--line);border-radius:13px;padding:12px 13px;margin-bottom:9px;display:block;
-  transition:border-color .16s var(--ease),background .16s var(--ease),transform .12s var(--ease);}
-.sp:hover{border-color:var(--brass);}
-.sp:active{transform:scale(.99);}
-.sp:focus-visible{outline:2px solid var(--ink-2);outline-offset:2px;}
-.sp .r1{display:flex;justify-content:space-between;align-items:baseline;gap:10px;}
-.sp .nm{font-size:14.5px;font-weight:600;}
-.sp .pr{font-family:"IBM Plex Mono",monospace;font-size:13.5px;font-weight:600;}
-.sp .r2{margin-top:4px;display:flex;justify-content:space-between;align-items:center;gap:10px;}
-.sp .wh{font-size:12.5px;color:var(--slate);}
-.sp .cl{font-size:11.5px;font-weight:600;color:var(--brass-deep);}
-.sp[data-shut="1"]{opacity:.5;cursor:not-allowed;}
-.sp[data-shut="1"] .cl{color:var(--slate-2);}
-
-/* ---------- segmented ---------- */
-.seg{display:flex;background:var(--wash);border-radius:11px;padding:3px;gap:3px;margin-bottom:16px;}
-.seg button{flex:1;padding:8px 4px;border:none;border-radius:9px;background:none;font:inherit;
-  font-size:12.5px;font-weight:600;color:var(--slate);cursor:pointer;
-  transition:background .18s var(--ease),color .18s var(--ease);}
-.seg button[data-on="1"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(20,38,59,.12);}
-.seg button:focus-visible{outline:2px solid var(--ink-2);outline-offset:1px;}
-
-/* ---------- vote ---------- */
-.mealhead{display:flex;justify-content:space-between;align-items:baseline;margin:16px 0 9px;}
-.mealhead b{font-size:14.5px;font-weight:700;letter-spacing:-.01em;}
-.mealhead span{font-size:11.5px;font-weight:600;color:var(--slate-2);}
-.mealhead span[data-done="1"]{color:var(--green);}
-.dish{border:1px solid var(--line);border-radius:13px;padding:11px 13px;margin-bottom:7px;cursor:pointer;
-  background:var(--surface);width:100%;text-align:left;font:inherit;color:inherit;display:block;
-  transition:border-color .16s var(--ease),background .16s var(--ease),transform .12s var(--ease);}
-.dish:hover{border-color:var(--ink-2);}
-.dish:active{transform:scale(.99);}
-.dish:focus-visible{outline:2px solid var(--ink-2);outline-offset:2px;}
-.dish[data-picked="1"]{border-color:var(--green);background:var(--green-wash);box-shadow:0 0 0 1px var(--green);}
-.dish .head{display:flex;justify-content:space-between;align-items:center;gap:10px;}
-.dish .label{font-size:13.5px;font-weight:600;}
-.dish .count{font-size:12px;color:var(--slate);font-variant-numeric:tabular-nums;white-space:nowrap;}
-.bar{height:5px;border-radius:3px;background:var(--wash);margin-top:8px;overflow:hidden;}
-.bar i{display:block;height:100%;background:var(--ink-2);border-radius:3px;transition:width .5s var(--ease);}
-.dish[data-picked="1"] .bar i{background:var(--green);}
-.recorded{background:var(--green-wash);border-radius:12px;padding:13px 14px;margin-bottom:6px;
-  display:flex;gap:11px;align-items:flex-start;animation:rise .3s var(--ease) both;}
-.recorded svg{width:20px;height:20px;flex:none;stroke:var(--green);fill:none;stroke-width:2.2;
-  stroke-linecap:round;stroke-linejoin:round;margin-top:1px;}
-.recorded .rt{font-size:13.5px;font-weight:600;color:#0F5B41;}
-.recorded .rd{margin-top:3px;font-size:12.5px;color:#2C6B54;line-height:1.5;}
-.progress{background:var(--wash);border-radius:12px;padding:11px 13px;margin-bottom:6px;
-  font-size:12.5px;color:var(--slate);line-height:1.5;}
-
-/* ---------- feedback ---------- */
-.crit{border:1px solid var(--line);border-radius:13px;padding:12px 13px;margin-bottom:9px;}
-.crit .cname{font-size:14px;font-weight:600;}
-.crit .chint{margin-top:2px;font-size:12px;color:var(--slate);}
-.scale{display:flex;gap:7px;margin-top:10px;}
-.scale button{flex:1;height:38px;border:1px solid var(--line);border-radius:10px;background:var(--surface);
-  font:inherit;font-size:14px;font-weight:600;color:var(--slate);cursor:pointer;
-  transition:background .16s var(--ease),color .16s var(--ease),border-color .16s var(--ease),transform .12s var(--ease);}
-.scale button:hover{border-color:var(--ink-2);color:var(--ink);}
-.scale button:active{transform:scale(.94);}
-.scale button[data-on="1"]{background:var(--ink);border-color:var(--ink);color:#fff;}
-.scalekey{display:flex;justify-content:space-between;margin-top:6px;font-size:11.5px;color:var(--slate-2);}
-
-.locked{border:1px dashed var(--line);border-radius:13px;padding:24px 18px;text-align:center;background:var(--wash);}
-.locked svg{width:28px;height:28px;stroke:var(--slate-2);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;}
-.locked .lt{margin-top:10px;font-size:14.5px;font-weight:600;}
-.locked .ld{margin-top:5px;font-size:12.5px;color:var(--slate);line-height:1.5;}
-.counter{display:flex;gap:8px;justify-content:center;margin-top:14px;}
-.counter div{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:7px 11px;min-width:52px;}
-.counter b{display:block;font-family:"IBM Plex Mono",monospace;font-size:17px;font-weight:700;}
-.counter span{display:block;margin-top:1px;font-size:10.5px;color:var(--slate-2);}
-.res{border:1px solid var(--line);border-radius:13px;padding:11px 13px;margin-bottom:7px;}
-.res .rtop{display:flex;justify-content:space-between;align-items:baseline;}
-.res .rname{font-size:13.5px;font-weight:600;}
-.res .rnum{font-family:"IBM Plex Mono",monospace;font-size:14px;font-weight:600;}
-.winner{background:var(--brass-wash);border:1px solid var(--brass);border-radius:13px;padding:12px 13px;margin-bottom:9px;}
-.winner .wl{font-size:11.5px;font-weight:600;color:var(--brass-deep);}
-.winner .wn{margin-top:2px;font-size:17px;font-weight:700;letter-spacing:-.015em;}
-.winner .wv{margin-top:2px;font-size:12.5px;color:var(--brass-deep);}
-.share{background:var(--wash);border-radius:13px;padding:13px;margin-top:14px;}
-.share .stitle{font-size:13.5px;font-weight:600;}
-.share .stext{margin-top:4px;font-size:12.5px;color:var(--slate);line-height:1.5;}
-.linkrow{display:flex;gap:8px;margin-top:10px;}
-.linkrow input{flex:1;font-family:"IBM Plex Mono",monospace;font-size:12px;padding:9px 10px;
-  border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--slate);min-width:0;}
-.linkrow button{padding:9px 14px;border:none;border-radius:10px;background:var(--ink);color:#fff;font:inherit;
-  font-size:12.5px;font-weight:600;cursor:pointer;white-space:nowrap;transition:background .16s var(--ease);}
-.linkrow button:hover{background:var(--ink-2);}
-.shrow{display:flex;gap:8px;margin-top:9px;}
-.shrow button{flex:1;padding:9px;border:1px solid var(--line);border-radius:10px;background:var(--surface);
-  font:inherit;font-size:12.5px;font-weight:600;color:var(--ink);cursor:pointer;transition:border-color .16s var(--ease);}
-.shrow button:hover{border-color:var(--ink-2);}
-
-/* ---------- token ---------- */
-.token{background:var(--brass);color:#2A1F04;border-radius:15px;padding:17px;position:relative;overflow:hidden;
-  animation:pop .38s var(--ease) both;}
-@keyframes pop{from{opacity:0;transform:scale(.96) translateY(8px);}to{opacity:1;transform:none;}}
-.token .k{font-size:12px;font-weight:600;color:#6B5210;}
-.token .item{margin-top:2px;font-size:20px;font-weight:700;letter-spacing:-.02em;}
-.token .code{font-family:"IBM Plex Mono",monospace;font-size:27px;font-weight:700;letter-spacing:.04em;margin-top:13px;line-height:1;}
-.token .codelab{margin-top:4px;font-size:11.5px;font-weight:600;color:#6B5210;}
-.qrbox{margin-top:13px;background:#fff;border-radius:11px;padding:10px;display:flex;
-  justify-content:center;box-shadow:0 1px 3px rgba(42,31,4,.22);}
-.qrbox svg{display:block;}
-.token[data-void="1"] .qrbox{opacity:.42;filter:grayscale(1);}
-.bars{display:flex;gap:2px;height:38px;margin-top:13px;align-items:stretch;}
-.bars i{display:block;background:#2A1F04;border-radius:1px;}
-.token .strip{margin-top:14px;padding-top:12px;border-top:2px dashed rgba(42,31,4,.32);
-  display:flex;justify-content:space-between;font-size:12.5px;}
-.token .strip span{color:#6B5210;}
-.token .strip b{display:block;font-weight:600;margin-top:1px;}
-.token .strip .m{font-family:"IBM Plex Mono",monospace;}
-.token[data-void="1"]{background:#D8DEE5;color:#67717D;}
-.token[data-void="1"] .k,.token[data-void="1"] .codelab,.token[data-void="1"] .strip span{color:#8A929B;}
-.token[data-void="1"] .bars i{background:#A8B1BA;}
-.token[data-void="1"] .strip{border-top-color:rgba(103,113,125,.4);}
-.stamp{position:absolute;top:50px;right:-6px;transform:rotate(-11deg);border:3px solid var(--red);color:var(--red);
-  border-radius:8px;padding:4px 13px;font-size:20px;font-weight:700;letter-spacing:.07em;opacity:.88;
-  animation:slam .3s var(--ease) both;}
-@keyframes slam{from{opacity:0;transform:rotate(-11deg) scale(1.5);}to{opacity:.88;transform:rotate(-11deg) scale(1);}}
-.showline{margin-top:11px;font-size:13px;color:var(--slate);line-height:1.5;}
-.voidline{margin-top:11px;background:var(--red-wash);color:#7A2A20;border-radius:12px;padding:11px 12px;font-size:12.5px;line-height:1.5;}
-.compare{border:1px solid var(--line);border-radius:13px;overflow:hidden;margin-top:14px;}
-.compare div{padding:11px 13px;font-size:12.5px;line-height:1.5;}
-.compare .now{background:var(--red-wash);color:#7A2A20;}
-.compare .then{background:var(--green-wash);color:#0F5B41;border-top:1px solid var(--line);}
-.compare b{font-weight:600;}
-.qty{display:flex;align-items:center;gap:12px;margin-top:12px;}
-.qty button{width:38px;height:38px;border-radius:10px;border:1px solid var(--line);background:var(--surface);
-  font-size:19px;color:var(--ink);cursor:pointer;line-height:1;transition:border-color .16s var(--ease),transform .12s var(--ease);}
-.qty button:hover{border-color:var(--ink-2);}
-.qty button:active{transform:scale(.92);}
-.qty .n{font-family:"IBM Plex Mono",monospace;font-size:17px;font-weight:600;min-width:22px;text-align:center;}
-.qty .lab{font-size:13px;color:var(--slate);}
-.pickbar{background:var(--brass-wash);border-radius:12px;padding:12px 13px;margin-bottom:4px;}
-.pickbar .pl{font-size:12px;font-weight:600;color:var(--brass-deep);}
-.pickbar .pn{margin-top:2px;font-size:16px;font-weight:700;letter-spacing:-.015em;}
-.pickbar .pw{margin-top:2px;font-size:12.5px;color:var(--brass-deep);}
-
-/* ---------- notices ---------- */
-.nc{display:block;width:100%;text-align:left;font:inherit;color:inherit;background:var(--surface);
-  border:1px solid var(--line);border-radius:13px;padding:12px 13px;margin-bottom:9px;cursor:pointer;
-  transition:border-color .16s var(--ease),box-shadow .16s var(--ease);}
-.nc:hover{border-color:var(--ink-2);}
-.nc[data-open="1"]{border-color:var(--ink-2);box-shadow:0 1px 4px rgba(20,38,59,.10);}
-.nc:focus-visible{outline:2px solid var(--ink-2);outline-offset:2px;}
-.nrow{display:flex;align-items:center;gap:7px;margin-bottom:6px;}
-.ntag{font-size:10.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
-  padding:2px 7px;border-radius:5px;}
-.nt-meet{background:var(--brass-wash);color:var(--brass-deep);}
-.nt-min{background:#E7EEF7;color:var(--ink-2);}
-.nt-maint{background:var(--red-wash);color:#7A2A20;}
-.nt-mess{background:var(--green-wash);color:var(--green);}
-.nt-res{background:#EDE7F6;color:#4A3B7A;}
-.npin{font-size:10.5px;font-weight:600;color:var(--slate-2);}
-.ndot{width:7px;height:7px;border-radius:50%;background:var(--red);}
-.ndate{margin-left:auto;font-size:11.5px;color:var(--slate-2);font-variant-numeric:tabular-nums;}
-.ntitle{font-size:14px;font-weight:600;line-height:1.35;}
-.nbody{margin-top:7px;font-size:13px;color:var(--slate);line-height:1.55;}
-.nby{margin-top:7px;font-size:11.5px;color:var(--slate-2);}
-
-/* ---------- profile ---------- */
-.phead{display:flex;gap:13px;align-items:center;margin-bottom:16px;}
-.pav{width:56px;height:56px;border-radius:50%;background:var(--brass);color:#2A1F04;flex:none;
-  display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:700;letter-spacing:.02em;}
-.phead .pn2{font-size:18px;font-weight:700;letter-spacing:-.018em;}
-.phead .pr2{margin-top:2px;font-size:13px;color:var(--slate);font-family:"IBM Plex Mono",monospace;}
-.rows{border:1px solid var(--line);border-radius:13px;overflow:hidden;margin-bottom:14px;}
-.rows .r{display:flex;justify-content:space-between;gap:14px;padding:11px 13px;font-size:13.5px;
+/* chrome */
+.top{background:var(--sf);padding:12px 14px;flex:none;display:flex;align-items:center;gap:11px;
   border-bottom:1px solid var(--line);}
-.rows .r:last-child{border-bottom:none;}
-.rows .r span{color:var(--slate);flex:none;}
-.rows .r b{font-weight:600;text-align:right;}
-.rows .r b.m{font-family:"IBM Plex Mono",monospace;font-weight:600;}
-.stat{display:flex;gap:9px;margin-bottom:14px;}
-.stat div{flex:1;border:1px solid var(--line);border-radius:12px;padding:11px 12px;}
-.stat b{display:block;font-family:"IBM Plex Mono",monospace;font-size:19px;font-weight:700;}
-.stat span{display:block;margin-top:2px;font-size:11.5px;color:var(--slate-2);line-height:1.35;}
+.burger{background:none;border:none;padding:5px;cursor:pointer;color:var(--tx);display:flex;border-radius:8px;}
+.burger:hover{background:var(--sf2);}
+.burger svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;}
+.top .hall{font-size:14.5px;font-weight:600;letter-spacing:-.01em;}
+.top .who{margin-top:1px;font-size:12px;color:var(--dim);display:flex;gap:6px;}
+.top .who .r{font-family:"IBM Plex Mono",monospace;}
+.av{margin-left:auto;width:33px;height:33px;border-radius:50%;background:var(--am);color:var(--onam);
+  border:none;font:inherit;font-size:12px;font-weight:700;cursor:pointer;}
+.scrim{position:absolute;inset:0;background:rgba(0,0,0,.62);opacity:0;pointer-events:none;
+  transition:opacity .24s var(--ez);z-index:8;}
+.scrim[data-open="1"]{opacity:1;pointer-events:auto;}
+.drawer{position:absolute;top:0;bottom:0;left:0;width:268px;background:var(--sf);z-index:9;
+  transform:translateX(-100%);transition:transform .3s var(--ez);display:flex;flex-direction:column;
+  border-right:1px solid var(--line);}
+.drawer[data-open="1"]{transform:translateX(0);}
+.dhead{padding:17px 16px;border-bottom:1px solid var(--line);}
+.dhead .n{font-size:15px;font-weight:600;}
+.dhead .r{margin-top:3px;font-size:12px;color:var(--dim);font-family:"IBM Plex Mono",monospace;}
+.ditems{padding:8px 0;flex:1;overflow-y:auto;}
+.ditems button{width:100%;display:flex;align-items:center;gap:11px;padding:11px 16px;border:none;
+  background:none;font:inherit;font-size:13.5px;color:var(--tx);cursor:pointer;text-align:left;}
+.ditems button:hover{background:var(--sf2);}
+.ditems button[data-on="1"]{background:var(--sf2);color:var(--am);font-weight:600;box-shadow:inset 3px 0 0 var(--am);}
+.ditems svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex:none;}
+.ditems .tag{margin-left:auto;font-size:10.5px;font-weight:700;background:var(--rd);color:#fff;border-radius:20px;padding:1px 7px;}
+.dfoot{padding:12px 16px;border-top:1px solid var(--line);font-size:11px;color:var(--dim);line-height:1.5;}
+.screen{flex:1;overflow-y:auto;padding:17px 17px 26px;}
+.page{animation:rise .3s var(--ez) both;}
+@keyframes rise{from{opacity:0;transform:translateY(7px);}to{opacity:1;transform:none;}}
+nav{display:flex;border-top:1px solid var(--line);background:var(--sf);flex:none;}
+nav button{flex:1;padding:8px 2px 10px;border:none;background:none;cursor:pointer;font:inherit;font-size:10px;
+  font-weight:500;color:var(--dim);display:flex;flex-direction:column;align-items:center;gap:3px;}
+nav button svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;}
+nav button[data-on="1"]{color:var(--am);font-weight:600;}
 
-/* ---------- complaints ---------- */
-.field{margin-bottom:11px;}
-.field label{display:block;font-size:12.5px;font-weight:600;margin-bottom:5px;}
-.field .opt{font-weight:400;color:var(--slate-2);}
-select,textarea,input.f{width:100%;font:inherit;font-size:13.5px;padding:10px 11px;border:1px solid var(--line);
-  border-radius:11px;background:var(--surface);color:var(--ink);transition:border-color .16s var(--ease);}
-textarea{resize:none;height:74px;line-height:1.45;}
-select:focus,textarea:focus,input.f:focus{outline:2px solid var(--ink-2);outline-offset:-1px;border-color:var(--ink-2);}
-.drop{border:1.5px dashed var(--line);border-radius:12px;padding:16px;text-align:center;cursor:pointer;display:block;
-  transition:border-color .16s var(--ease),background .16s var(--ease);}
-.drop:hover{border-color:var(--ink-2);background:var(--wash);}
-.drop svg{width:22px;height:22px;stroke:var(--slate-2);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;}
-.drop .dt{margin-top:6px;font-size:13px;font-weight:600;}
-.drop .dd{margin-top:2px;font-size:12px;color:var(--slate-2);}
-.drop input{display:none;}
-.shot{position:relative;border-radius:12px;overflow:hidden;border:1px solid var(--line);animation:rise .28s var(--ease) both;}
-.shot img{display:block;width:100%;height:150px;object-fit:cover;}
-.shot button{position:absolute;top:8px;right:8px;width:28px;height:28px;border:none;border-radius:50%;
-  background:rgba(20,38,59,.78);color:#fff;font-size:16px;line-height:1;cursor:pointer;}
-.case{border:1px solid var(--line);border-radius:13px;padding:12px 13px;margin-bottom:9px;}
-.case .top-row{display:flex;justify-content:space-between;align-items:center;gap:10px;}
-.case .ref{font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:600;color:var(--slate);}
-.case .txt{margin-top:6px;font-size:13.5px;font-weight:500;line-height:1.4;}
-.case .meta{margin-top:6px;font-size:12px;color:var(--slate);line-height:1.5;}
-.case .thumb{margin-top:9px;border-radius:9px;width:100%;height:104px;object-fit:cover;display:block;}
-.pill{padding:2px 9px;border-radius:20px;font-size:11.5px;font-weight:600;white-space:nowrap;}
-.pill.open{background:var(--brass-wash);color:var(--brass-deep);}
-.pill.prog{background:#E7EEF7;color:var(--ink-2);}
-.pill.done{background:var(--green-wash);color:var(--green);}
-
-.btn{width:100%;padding:12.5px;border:none;border-radius:12px;background:var(--ink);color:#fff;font:inherit;
-  font-size:14px;font-weight:600;cursor:pointer;margin-top:3px;
-  transition:background .16s var(--ease),transform .12s var(--ease);}
-.btn:hover{background:var(--ink-2);}
+/* type */
+h2{font-size:17px;font-weight:700;letter-spacing:-.02em;}
+.sub{margin-top:3px;font-size:12.5px;color:var(--mu);line-height:1.45;}
+.gap{height:15px;}
+.seg{display:flex;background:var(--sf);border-radius:11px;padding:3px;gap:3px;margin-bottom:15px;border:1px solid var(--line);}
+.seg button{flex:1;padding:8px 3px;border:none;border-radius:8px;background:none;font:inherit;font-size:12px;
+  font-weight:600;color:var(--mu);cursor:pointer;transition:background .18s var(--ez),color .18s var(--ez);}
+.seg button[data-on="1"]{background:var(--am);color:var(--onam);}
+.card{background:var(--sf);border:1px solid var(--line);border-radius:13px;padding:12px 13px;margin-bottom:8px;}
+.row1{display:flex;justify-content:space-between;align-items:baseline;gap:10px;}
+.nm{font-size:14px;font-weight:600;}
+.tm{font-size:11.5px;color:var(--dim);font-variant-numeric:tabular-nums;}
+.food{margin-top:5px;font-size:12.5px;color:var(--mu);line-height:1.5;}
+.secline{display:flex;align-items:center;gap:10px;margin:19px 0 11px;}
+.secline b{font-size:13px;font-weight:700;letter-spacing:.02em;white-space:nowrap;}
+.secline i{flex:1;height:1px;background:var(--line);display:block;}
+.btn{width:100%;padding:12px;border:none;border-radius:11px;background:var(--am);color:var(--onam);font:inherit;
+  font-size:13.5px;font-weight:700;cursor:pointer;margin-top:3px;transition:transform .12s var(--ez);}
 .btn:active{transform:scale(.985);}
-.btn:focus-visible{outline:2px solid var(--brass);outline-offset:2px;}
-.btn.ghost{background:transparent;color:var(--slate);border:1px solid var(--line);}
-.btn.ghost:hover{background:var(--wash);color:var(--ink);}
-.btn.scan{background:var(--green);}
-.btn.scan:hover{background:#12684A;}
-.btn.red{background:transparent;color:var(--red);border:1px solid var(--line);}
-.btn.red:hover{background:var(--red-wash);}
-.btn[disabled]{background:var(--line);color:#98A2AF;cursor:not-allowed;transform:none;}
-.btn.sm{padding:9px;font-size:12.5px;border-radius:10px;}
-.done-note{background:var(--green-wash);border-radius:12px;padding:12px 13px;font-size:13px;color:#0F5B41;
-  line-height:1.5;margin-bottom:14px;animation:rise .3s var(--ease) both;}
-.done-note .ref{font-family:"IBM Plex Mono",monospace;font-weight:600;}
-.toast{position:absolute;left:50%;bottom:80px;transform:translateX(-50%) translateY(10px);background:var(--ink);
-  color:#fff;padding:10px 16px;border-radius:22px;font-size:12.5px;font-weight:500;opacity:0;pointer-events:none;
-  transition:opacity .22s var(--ease),transform .22s var(--ease);z-index:12;white-space:nowrap;
-  box-shadow:0 6px 18px rgba(20,38,59,.28);}
+.btn.ghost{background:transparent;color:var(--mu);border:1px solid var(--line);}
+.btn.ghost:hover{background:var(--sf);color:var(--tx);}
+.btn.gr{background:var(--gr);color:#08251A;}
+.btn[disabled]{background:var(--sf2);color:var(--dim);cursor:not-allowed;}
+.btn.sm{padding:9px;font-size:12px;border-radius:9px;}
+.ok{background:var(--grd);border:1px solid #1D4A38;border-radius:12px;padding:12px 13px;margin-bottom:12px;
+  display:flex;gap:10px;align-items:flex-start;animation:rise .3s var(--ez) both;}
+.ok svg{width:19px;height:19px;flex:none;stroke:var(--gr);fill:none;stroke-width:2.3;stroke-linecap:round;stroke-linejoin:round;margin-top:1px;}
+.ok .t{font-size:13px;font-weight:600;color:var(--gr);}
+.ok .d{margin-top:3px;font-size:12px;color:#9FD8BC;line-height:1.5;}
+.info{background:var(--sf);border:1px solid var(--line);border-radius:12px;padding:11px 12px;
+  font-size:12px;color:var(--mu);line-height:1.55;margin-bottom:12px;}
+.warn{background:var(--rdd);border:1px solid #4A2622;border-radius:12px;padding:11px 12px;
+  font-size:12px;color:#FFB3AC;line-height:1.55;}
+
+/* pickable */
+.pk{width:100%;text-align:left;font:inherit;color:inherit;background:var(--sf);cursor:pointer;
+  border:1px solid var(--line);border-radius:13px;padding:11px 13px;margin-bottom:7px;display:block;
+  transition:border-color .16s var(--ez),background .16s var(--ez),transform .12s var(--ez);}
+.pk:hover{border-color:var(--am2);}
+.pk:active{transform:scale(.99);}
+.pk[data-on="1"]{border-color:var(--am);background:#2A2214;}
+.pk[disabled]{opacity:.42;cursor:not-allowed;}
+.pk .r1{display:flex;justify-content:space-between;align-items:baseline;gap:10px;}
+.pk .t1{font-size:13.5px;font-weight:600;}
+.pk .p1{font-family:"IBM Plex Mono",monospace;font-size:13px;font-weight:600;color:var(--am);}
+.pk .r2{margin-top:3px;display:flex;justify-content:space-between;gap:10px;}
+.pk .s1{font-size:12px;color:var(--mu);}
+.pk .s2{font-size:11px;font-weight:600;color:var(--am2);}
+.bar{height:5px;border-radius:3px;background:var(--sf2);margin-top:8px;overflow:hidden;}
+.bar i{display:block;height:100%;background:var(--am);border-radius:3px;transition:width .5s var(--ez);}
+.pk[data-on="1"] .bar i{background:var(--gr);}
+.cnt{font-size:11.5px;color:var(--dim);font-variant-numeric:tabular-nums;}
+.mh{display:flex;justify-content:space-between;align-items:baseline;margin:15px 0 8px;}
+.mh b{font-size:13.5px;font-weight:700;}
+.mh span{font-size:11px;font-weight:600;color:var(--dim);}
+.mh span[data-done="1"]{color:var(--gr);}
+
+/* token */
+.tok{background:linear-gradient(158deg,#F2B14A,#D28312);color:var(--onam);border-radius:15px;padding:16px;
+  position:relative;overflow:hidden;animation:pop .38s var(--ez) both;}
+@keyframes pop{from{opacity:0;transform:scale(.96) translateY(8px);}to{opacity:1;transform:none;}}
+.tok .k{font-size:11.5px;font-weight:600;color:#6B4F0D;}
+.tok .i{margin-top:2px;font-size:19px;font-weight:700;letter-spacing:-.02em;}
+.tok .c{margin-top:11px;font-family:"IBM Plex Mono",monospace;font-size:25px;font-weight:700;letter-spacing:.04em;line-height:1;}
+.tok .cl{margin-top:4px;font-size:11px;font-weight:600;color:#6B4F0D;}
+.qrbox{margin-top:12px;background:#fff;border-radius:11px;padding:10px;display:flex;justify-content:center;}
+.qrbox svg{display:block;}
+.strip{margin-top:13px;padding-top:11px;border-top:2px dashed rgba(36,24,2,.32);display:flex;justify-content:space-between;font-size:12px;}
+.strip span{color:#6B4F0D;}
+.strip b{display:block;font-weight:600;margin-top:1px;}
+.strip .m{font-family:"IBM Plex Mono",monospace;}
+.tok[data-void="1"]{background:var(--sf2);color:var(--dim);}
+.tok[data-void="1"] .k,.tok[data-void="1"] .cl,.tok[data-void="1"] .strip span{color:var(--dim);}
+.tok[data-void="1"] .qrbox{opacity:.3;}
+.tok[data-void="1"] .strip{border-top-color:var(--line);}
+.stamp{position:absolute;top:48px;right:-6px;transform:rotate(-11deg);border:3px solid var(--rd);color:var(--rd);
+  border-radius:8px;padding:4px 12px;font-size:19px;font-weight:700;letter-spacing:.07em;animation:slam .3s var(--ez) both;}
+@keyframes slam{from{opacity:0;transform:rotate(-11deg) scale(1.5);}to{opacity:1;transform:rotate(-11deg) scale(1);}}
+.qty{display:flex;align-items:center;gap:11px;margin-top:11px;}
+.qty button{width:36px;height:36px;border-radius:10px;border:1px solid var(--line);background:var(--sf);
+  font-size:18px;color:var(--tx);cursor:pointer;line-height:1;}
+.qty .n{font-family:"IBM Plex Mono",monospace;font-size:16px;font-weight:600;min-width:20px;text-align:center;}
+.qty .l{font-size:12.5px;color:var(--mu);}
+
+/* forms */
+.fld{margin-bottom:10px;}
+.fld label{display:block;font-size:12px;font-weight:600;margin-bottom:5px;}
+.fld .opt{font-weight:400;color:var(--dim);}
+select,textarea,input.f{width:100%;font:inherit;font-size:13px;padding:10px 11px;border:1px solid var(--line);
+  border-radius:10px;background:var(--sf);color:var(--tx);}
+select:focus,textarea:focus,input.f:focus{outline:none;border-color:var(--am);}
+textarea{resize:none;height:70px;line-height:1.45;}
+.two{display:flex;gap:9px;}
+.two>*{flex:1;}
+.drop{border:1.5px dashed var(--line);border-radius:12px;padding:15px;text-align:center;cursor:pointer;display:block;}
+.drop:hover{border-color:var(--am2);background:var(--sf);}
+.drop svg{width:21px;height:21px;stroke:var(--dim);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;}
+.drop .t{margin-top:5px;font-size:12.5px;font-weight:600;}
+.drop .d{margin-top:2px;font-size:11.5px;color:var(--dim);}
+.drop input{display:none;}
+.shot{position:relative;border-radius:12px;overflow:hidden;border:1px solid var(--line);}
+.shot img{display:block;width:100%;height:140px;object-fit:cover;}
+.shot button{position:absolute;top:7px;right:7px;width:27px;height:27px;border:none;border-radius:50%;
+  background:rgba(0,0,0,.7);color:#fff;font-size:15px;cursor:pointer;}
+.case .cr{display:flex;justify-content:space-between;align-items:center;gap:9px;}
+.ref{font-family:"IBM Plex Mono",monospace;font-size:11.5px;font-weight:600;color:var(--dim);}
+.txt{margin-top:6px;font-size:13px;font-weight:500;line-height:1.4;}
+.meta{margin-top:5px;font-size:11.5px;color:var(--dim);line-height:1.5;}
+.thumb{margin-top:8px;border-radius:9px;width:100%;height:98px;object-fit:cover;display:block;}
+.pill{padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600;white-space:nowrap;}
+.pill.o{background:#3A2E14;color:var(--am);}
+.pill.p{background:#1B2C3A;color:#6FB6E8;}
+.pill.d{background:var(--grd);color:var(--gr);}
+
+/* slots */
+.slots{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:9px;}
+.slot{padding:9px 2px;border:1px solid var(--line);border-radius:9px;background:var(--sf);font:inherit;
+  font-family:"IBM Plex Mono",monospace;font-size:11.5px;font-weight:600;color:var(--tx);cursor:pointer;
+  transition:background .14s var(--ez),border-color .14s var(--ez);}
+.slot:hover:not([disabled]){border-color:var(--am2);}
+.slot[data-on="1"]{background:var(--am);border-color:var(--am);color:var(--onam);}
+.slot[disabled]{opacity:.3;cursor:not-allowed;text-decoration:line-through;}
+.brk{margin:11px 0 4px;padding:9px 11px;background:var(--sf);border:1px dashed var(--line);border-radius:10px;
+  font-size:11.5px;color:var(--dim);text-align:center;}
+.days{display:flex;gap:6px;overflow-x:auto;padding-bottom:3px;}
+.day{flex:none;min-width:54px;padding:8px 4px;border:1px solid var(--line);border-radius:10px;background:var(--sf);
+  font:inherit;font-size:11px;color:var(--mu);cursor:pointer;text-align:center;}
+.day b{display:block;font-family:"IBM Plex Mono",monospace;font-size:15px;font-weight:700;color:var(--tx);margin-top:1px;}
+.day[data-on="1"]{background:var(--am);border-color:var(--am);color:var(--onam);}
+.day[data-on="1"] b{color:var(--onam);}
+.quota{display:flex;gap:8px;margin-bottom:12px;}
+.quota div{flex:1;background:var(--sf);border:1px solid var(--line);border-radius:11px;padding:10px 11px;}
+.quota b{display:block;font-family:"IBM Plex Mono",monospace;font-size:18px;font-weight:700;}
+.quota span{display:block;margin-top:1px;font-size:11px;color:var(--dim);line-height:1.3;}
+
+/* notices */
+.nc{display:block;width:100%;text-align:left;font:inherit;color:inherit;background:var(--sf);
+  border:1px solid var(--line);border-radius:13px;padding:11px 12px;margin-bottom:8px;cursor:pointer;}
+.nc[data-open="1"]{border-color:var(--am2);}
+.nr{display:flex;align-items:center;gap:7px;margin-bottom:5px;}
+.ntag{font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:2px 7px;border-radius:5px;}
+.t-meet{background:#3A2E14;color:var(--am);} .t-min{background:#1B2C3A;color:#6FB6E8;}
+.t-maint{background:var(--rdd);color:#FF9E94;} .t-mess{background:var(--grd);color:var(--gr);}
+.t-res{background:#2C2440;color:#B79CF0;}
+.ndot{width:6px;height:6px;border-radius:50%;background:var(--rd);}
+.ndate{margin-left:auto;font-size:11px;color:var(--dim);}
+.ntitle{font-size:13.5px;font-weight:600;line-height:1.35;}
+.nbody{margin-top:6px;font-size:12.5px;color:var(--mu);line-height:1.55;}
+.nby{margin-top:6px;font-size:11px;color:var(--dim);}
+
+/* profile */
+.ph{display:flex;gap:12px;align-items:center;margin-bottom:14px;}
+.pav{width:54px;height:54px;border-radius:50%;background:var(--am);color:var(--onam);flex:none;display:flex;
+  align-items:center;justify-content:center;font-size:18px;font-weight:700;}
+.ph .n2{font-size:17px;font-weight:700;letter-spacing:-.02em;}
+.ph .r2{margin-top:2px;font-size:12.5px;color:var(--mu);font-family:"IBM Plex Mono",monospace;}
+.rows{background:var(--sf);border:1px solid var(--line);border-radius:13px;overflow:hidden;margin-bottom:12px;}
+.rows .r{display:flex;justify-content:space-between;gap:14px;padding:10px 12px;font-size:12.5px;border-bottom:1px solid var(--line);}
+.rows .r:last-child{border-bottom:none;}
+.rows .r span{color:var(--mu);flex:none;}
+.rows .r b{font-weight:600;text-align:right;}
+.rows .r b.m{font-family:"IBM Plex Mono",monospace;}
+
+.toast{position:absolute;left:50%;bottom:76px;transform:translateX(-50%) translateY(10px);background:var(--am);
+  color:var(--onam);padding:10px 16px;border-radius:22px;font-size:12.5px;font-weight:600;opacity:0;
+  pointer-events:none;transition:opacity .22s var(--ez),transform .22s var(--ez);z-index:12;white-space:nowrap;}
 .toast[data-on="1"]{opacity:1;transform:translateX(-50%) translateY(0);}
-nav{display:flex;border-top:1px solid var(--line);background:var(--surface);flex:none;}
-nav button{flex:1;padding:9px 4px 11px;border:none;background:none;cursor:pointer;font:inherit;font-size:11px;
-  font-weight:500;color:var(--slate-2);display:flex;flex-direction:column;align-items:center;gap:3px;
-  transition:color .16s var(--ease);}
-nav button svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;
-  stroke-linejoin:round;transition:transform .18s var(--ease);}
-nav button[data-on="1"]{color:var(--ink);font-weight:600;}
-nav button[data-on="1"] svg{transform:translateY(-1px);}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
 </style>
 </head>
 <body>
-
 <div class="intro">
   <h1>Hall 14 Portal</h1>
-  <p>A working prototype. Sign in, vote a dish for each meal, reserve a special item and get a single-use token, rate the mess, and file a complaint with a photo.</p>
+  <p>Working prototype. Book room cleaning, reserve a special item and get a single-use QR token, vote on the menu, suggest a dish, and file maintenance or cleanliness complaints.</p>
 </div>
 
 <div class="phone">
-  <!-- login -->
-  <div class="login" id="login" data-out="0">
-    <div class="crest">H14</div>
-    <div id="lbody"></div>
-  </div>
-
+  <div class="login" id="login" data-out="0"><div class="crest">H14</div><div id="lbody"></div></div>
   <div class="top">
-    <button class="burger" id="burger" aria-label="Open menu">
-      <svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
-    <div>
-      <div class="hall">Hall 14</div>
-      <div class="who"><span id="uname">Umesh Tupdale</span> <span class="roll" id="uroll">261110071</span></div>
-    </div>
+    <button class="burger" id="burger" aria-label="Menu"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    <div><div class="hall">Hall 14</div><div class="who"><span>Umesh Tupdale</span><span class="r">261110071</span></div></div>
     <button class="av" id="avatar" aria-label="Profile">UT</button>
   </div>
-
   <div class="screen" id="screen"></div>
   <nav id="nav"></nav>
-
   <div class="scrim" id="scrim" data-open="0"></div>
-  <aside class="drawer" id="drawer" data-open="0" aria-label="Navigation">
-    <div class="dhead"><div class="n">Umesh Tupdale</div><div class="r">261110071</div></div>
-    <div class="items" id="ditems"></div>
-    <div class="dfoot">Prototype with sample data. Built to show the system is buildable, not to run the hall today.</div>
+  <aside class="drawer" id="drawer" data-open="0">
+    <div class="dhead"><div class="n">Umesh Tupdale</div><div class="r">261110071 · C-402</div></div>
+    <div class="ditems" id="ditems"></div>
+    <div class="dfoot">Prototype with sample data. Built to show the system is buildable.</div>
   </aside>
-
   <div class="toast" id="toast" data-on="0"></div>
 </div>
 
@@ -591,433 +452,418 @@ const QR=(function(){
   return {encode};
 })();
 
-const ME={name:"Umesh Tupdale",roll:"261110071",room:"C-402",block:"C block, 4th floor",
+const ME={name:"Umesh Tupdale",roll:"261110071",room:"C-402",block:"C",floor:"4th floor",
   prog:"M.Tech",dept:"Computer Science and Engineering",email:"umesht26@iitk.ac.in",
-  phone:"+91 •••••  ••071",mess:"Veg with non-veg option",joined:"July 2026"};
+  mess:"Veg with non-veg option",joined:"July 2026"};
 
 const SPECIALS=[
-  {id:1,name:"Chicken curry",when:"Thursday dinner",price:60,shut:false},
-  {id:2,name:"Fish fry",when:"Saturday dinner",price:80,shut:false},
-  {id:3,name:"Paneer tikka",when:"Friday dinner",price:50,shut:false},
-  {id:4,name:"Egg biryani",when:"Sunday lunch",price:45,shut:true}
-];
+ {id:1,name:"Chicken curry",when:"Thursday dinner",price:60,shut:false},
+ {id:2,name:"Fish fry",when:"Saturday dinner",price:80,shut:false},
+ {id:3,name:"Paneer tikka",when:"Friday dinner",price:50,shut:false},
+ {id:4,name:"Egg biryani",when:"Sunday lunch",price:45,shut:true}];
+
 const MEALS=[
-  {k:"breakfast",label:"Breakfast",items:[
-    {id:1,label:"Aloo paratha with curd",n:171},{id:2,label:"Idli sambar",n:143},
-    {id:3,label:"Bread omelette",n:118},{id:4,label:"Poha with sev",n:96}]},
-  {k:"lunch",label:"Lunch",items:[
-    {id:1,label:"Chole bhature",n:184},{id:2,label:"Rajma chawal",n:158},
-    {id:3,label:"Kadhi chawal",n:104},{id:4,label:"Paneer butter masala",n:167}]},
-  {k:"dinner",label:"Dinner",items:[
-    {id:1,label:"Veg biryani with raita",n:162},{id:2,label:"Masala dosa",n:126},
-    {id:3,label:"Dal makhani with naan",n:149},{id:4,label:"Egg curry",n:141}]}
-];
+ {k:"breakfast",label:"Breakfast",items:[
+   {id:1,label:"Aloo paratha with curd",n:171},{id:2,label:"Idli sambar",n:143},
+   {id:3,label:"Bread omelette",n:118},{id:4,label:"Poha with sev",n:96}]},
+ {k:"lunch",label:"Lunch",items:[
+   {id:1,label:"Chole bhature",n:184},{id:2,label:"Rajma chawal",n:158},
+   {id:3,label:"Kadhi chawal",n:104},{id:4,label:"Paneer butter masala",n:167}]},
+ {k:"dinner",label:"Dinner",items:[
+   {id:1,label:"Veg biryani with raita",n:162},{id:2,label:"Masala dosa",n:126},
+   {id:3,label:"Dal makhani with naan",n:149},{id:4,label:"Egg curry",n:141}]}];
+
 const CRIT=[["quality","Food quality","Taste and freshness"],
-  ["quantity","Quantity","Enough served, and till closing"],
-  ["hygiene","Hygiene","Kitchen, counters and dining area"],
-  ["variety","Variety","Repetition across the week"]];
+ ["quantity","Quantity","Enough served, and till closing"],
+ ["hygiene","Hygiene","Kitchen, counters and dining area"],
+ ["variety","Variety","Repetition across the week"]];
 
 const NOTICES=[
- {id:1,type:"meeting",tag:"Open house",title:"Monthly open house — 8 September, 9 pm",
-  date:"2 Sep",by:"President",pin:true,
-  body:"Mess hall, ground floor. The Committee will report on every commitment: what was completed last month, what is pending and why. Bring anything you want raised — no agenda needed."},
- {id:2,type:"minutes",tag:"Minutes",title:"HEC meeting minutes — 29 August",
-  date:"30 Aug",by:"President",pin:false,
-  body:"Present: all six office-bearers. Decisions: (1) handwash dispensers approved for all C-block washrooms, Maintenance Secretary to obtain quotations by 6 September. (2) Drain cleaning moved to a fortnightly schedule. (3) Study hall proposal to be taken to the Hall Office. Pending from July: lift generator connection, still awaiting Electrical Maintenance."},
- {id:3,type:"maint",tag:"Maintenance",title:"Water supply off, B and C blocks, 4 September",
-  date:"1 Sep",by:"Hall Office",pin:false,
-  body:"Supply will be shut from 10 am to 2 pm for overhead tank cleaning. Please store what you need the night before. Washrooms on the ground floor stay in service."},
- {id:4,type:"mess",tag:"Mess",title:"Dinner extended to 10:30 pm during mid-sems",
-  date:"31 Aug",by:"Mess Secretary",pin:false,
-  body:"From 8 to 16 September, dinner service runs until 10:30 pm for residents coming back late from the library or labs. Counters close at 10:15."},
- {id:5,type:"result",tag:"Result",title:"August mess poll — result published",
-  date:"29 Aug",by:"President",pin:false,
-  body:"312 of 1033 residents responded. Hygiene scored lowest at 2.7 and has been raised with the contractor in writing. Chole bhature, aloo paratha and veg biryani have been added to the September menu."}
-];
+ {id:1,type:"meet",tag:"Open house",title:"Monthly open house — 8 September, 9 pm",date:"2 Sep",by:"President",pin:true,
+  body:"Mess hall, ground floor. The Committee will report on every commitment: what was completed, what is pending and why."},
+ {id:2,type:"min",tag:"Minutes",title:"HEC meeting minutes — 29 August",date:"30 Aug",by:"President",pin:false,
+  body:"Decisions: handwash dispensers approved for all C-block washrooms, quotations due 6 September. Drain cleaning moved to fortnightly. Study hall proposal going to the Hall Office. Pending from July: lift generator connection."},
+ {id:3,type:"maint",tag:"Maintenance",title:"Water supply off, B and C blocks, 4 September",date:"1 Sep",by:"Hall Office",pin:false,
+  body:"Shut from 10 am to 2 pm for tank cleaning. Ground floor washrooms stay in service."},
+ {id:4,type:"mess",tag:"Mess",title:"Dinner extended to 10:30 pm during mid-sems",date:"31 Aug",by:"Mess Secretary",pin:false,
+  body:"From 8 to 16 September, dinner runs until 10:30 pm. Counters close at 10:15."},
+ {id:5,type:"res",tag:"Result",title:"August mess poll — result published",date:"29 Aug",by:"President",pin:false,
+  body:"312 of 1033 residents responded. Hygiene scored lowest at 2.7 and has been raised with the contractor in writing."}];
 
-const S={auth:false,tab:"menu",drawer:false,pollTab:"vote",
+const BLOCKS=["A","B","C","D","E","F","G"];
+const DAYS=[{d:"Thu",n:4},{d:"Fri",n:5},{d:"Sat",n:6},{d:"Sun",n:7},{d:"Mon",n:8},{d:"Tue",n:9},{d:"Wed",n:10}];
+function slotList(){
+  const out=[];
+  for(let m=8*60+30;m<13*60;m+=15) out.push(m);
+  for(let m=15*60;m<18*60;m+=15) out.push(m);
+  return out;
+}
+const hhmm=m=>String(Math.floor(m/60)).padStart(2,"0")+":"+String(m%60).padStart(2,"0");
+const TAKEN={4:[540,555,600,930,945],5:[510,525,975],6:[600,615,630,1020],7:[510,900],8:[555,570,585],9:[915,930],10:[510,525,540]};
+
+const S={tab:"menu",drawer:false,menuTab:"today",pollTab:"vote",compTab:"maint",
   picked:{breakfast:null,lunch:null,dinner:null},
   chosen:null,qty:1,booked:null,
   fb:{given:{},submitted:false},pollClosed:false,responses:214,
   avg:{quality:3.1,quantity:3.6,hygiene:2.7,variety:2.9},
-  cases:[{ref:"H14-0331",txt:"Washroom drain choked, C-block 3rd floor",desk:"Maintenance",days:2,st:"prog",due:"4 Sep",img:null},
-         {ref:"H14-0327",txt:"Lift stopped during power cut",desk:"Hall Office",days:5,st:"done",due:"resolved 29 Aug",img:null}],
-  seq:332,filed:null,shot:null,openNotice:1,readIds:[]};
+  suggestions:[{id:1,dish:"Masala oats",meal:"Breakfast",st:"In next poll"}],
+  sugSeq:2,
+  cleanDay:4,cleanSlot:null,cleanRoom:ME.room,cleanBlock:ME.block,
+  bookings:[{day:2,dayLabel:"Tue 2 Sep",slot:600,room:"C-402"}],
+  cases:{maint:[
+    {ref:"H14-M0331",txt:"Lift stopped during power cut",desk:"Hall Office",days:5,st:"d",due:"resolved 29 Aug",img:null},
+    {ref:"H14-M0327",txt:"Tube light not working, corridor 4th floor",desk:"Electrical",days:2,st:"p",due:"4 Sep",img:null}],
+   clean:[
+    {ref:"H14-C0118",txt:"Washroom drain choked, C-block 4th floor",desk:"Housekeeping",days:1,st:"p",due:"3 Sep",img:null}]},
+  seq:{maint:332,clean:119},filed:null,shot:null,
+  openNotice:1,readIds:[]};
 
 const el=id=>document.getElementById(id);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const ICON={menu:"M4 5h16M4 12h16M4 19h10",poll:"M5 20V10M12 20V4M19 20v-7",
-  token:"M3 8h18v3a2 2 0 000 4v3H3v-3a2 2 0 000-4V8z",
-  help:"M12 3a9 9 0 100 18 9 9 0 000-18zm0 5v5m0 3.5v.5",
-  news:"M5 4h11l3 3v13H5zM9 9h7M9 13h7M9 17h4",
-  me:"M12 12a4 4 0 100-8 4 4 0 000 8zm-7 8a7 7 0 0114 0"};
-const PAGES=[{id:"menu",label:"Today's menu"},{id:"poll",label:"Monthly mess poll"},
-  {id:"token",label:"Special item token"},{id:"news",label:"Notices"},
-  {id:"help",label:"Complaints"},{id:"me",label:"My profile"}];
-const BOTTOM=["menu","poll","token","news","help"];
-const SHORT={menu:"Menu",poll:"Poll",token:"Token",news:"Notices",help:"Complaints",me:"Profile"};
+ token:"M3 8h18v3a2 2 0 000 4v3H3v-3a2 2 0 000-4V8z",
+ clean:"M8 3h8l1 6H7zM12 9v12M9 21h6",
+ help:"M12 3a9 9 0 100 18 9 9 0 000-18zm0 5v5m0 3.5v.5",
+ news:"M5 4h11l3 3v13H5zM9 9h7M9 13h7M9 17h4",
+ me:"M12 12a4 4 0 100-8 4 4 0 000 8zm-7 8a7 7 0 0114 0"};
+const PAGES=[{id:"menu",l:"Menu & specials"},{id:"poll",l:"Monthly mess poll"},{id:"token",l:"My token"},
+ {id:"clean",l:"Room cleaning"},{id:"help",l:"Complaints"},{id:"news",l:"Notices"},{id:"me",l:"My profile"}];
+const BOTTOM=["menu","poll","token","clean","help"];
+const SHORT={menu:"Menu",poll:"Poll",token:"Token",clean:"Cleaning",help:"Issues",news:"Notices",me:"Profile"};
 
 function toast(m){const t=el("toast");t.textContent=m;t.dataset.on="1";
   clearTimeout(t._h);t._h=setTimeout(()=>t.dataset.on="0",2000);}
 function code(){const a="ACDEFHJKLMNPRTUVWXY349";let s="";
   for(let i=0;i<4;i++)s+=a[Math.floor(Math.random()*a.length)];
   return "H14-"+s+"-"+Math.floor(1000+Math.random()*9000);}
-function qrSVG(text,px){
-  const m=QR.encode(text,"M"), n=m.length, q=4, size=n+2*q;
-  let d="";
-  for(let r=0;r<n;r++)for(let c=0;c<n;c++) if(m[r][c]) d+=`M${c+q} ${r+q}h1v1h-1z`;
-  return `<svg viewBox="0 0 ${size} ${size}" width="${px}" height="${px}" shape-rendering="crispEdges" role="img" aria-label="Collection QR code"><rect width="${size}" height="${size}" fill="#fff"/><path d="${d}" fill="#14263B"/></svg>`;
-}
-function payload(t){return ["H14",t.roll,t.code,t.item,t.qty,"2026-09-03"].join("|");}
-function barcode(seed){let h=0;for(const c of seed)h=(h*31+c.charCodeAt(0))>>>0;let o="";
-  for(let i=0;i<38;i++){h=(h*1103515245+12345)>>>0;o+=`<i style="width:${1+(h>>16)%4}px"></i>`;}return o;}
-const votedCount=()=>MEALS.filter(m=>S.picked[m.k]).length;
+function qrSVG(t,px){const m=QR.encode(t,"M"),n=m.length,q=4,sz=n+2*q;let d="";
+  for(let r=0;r<n;r++)for(let c=0;c<n;c++)if(m[r][c])d+=`M${c+q} ${r+q}h1v1h-1z`;
+  return `<svg viewBox="0 0 ${sz} ${sz}" width="${px}" height="${px}" shape-rendering="crispEdges" role="img" aria-label="Collection QR"><rect width="${sz}" height="${sz}" fill="#fff"/><path d="${d}" fill="#16181D"/></svg>`;}
+const payload=t=>["H14",t.roll,t.code,t.item,t.qty,"2026-09-03"].join("|");
+const voted=()=>MEALS.filter(m=>S.picked[m.k]).length;
+const spBtn=s=>`<button class="pk" data-pick="${s.id}" ${s.shut?"disabled":""}>
+  <div class="r1"><span class="t1">${esc(s.name)}</span><span class="p1">&#8377;${s.price}</span></div>
+  <div class="r2"><span class="s1">${esc(s.when)}</span><span class="s2">${s.shut?"Closed":"Closes 9 pm"}</span></div></button>`;
 
-/* ---------------- MENU ---------------- */
-function menu(){return `<div class="page">
-  <h2>Today's menu</h2><p class="sub">Wednesday, 2 September</p><div class="gap"></div>
-  <div class="card meal"><div class="row"><span class="name">Breakfast</span><span class="time">7:30 – 9:30</span></div>
+/* ---------- MENU ---------- */
+function menu(){
+  const seg=`<div class="seg">${[["today","Today"],["special","Specials"],["suggest","Suggest"]]
+    .map(([k,l])=>`<button data-mtab="${k}" data-on="${S.menuTab===k?1:0}">${l}</button>`).join("")}</div>`;
+  return `<div class="page"><h2>Mess</h2><p class="sub">Wednesday, 2 September</p><div class="gap"></div>
+    ${seg}${({today:mToday,special:mSpecial,suggest:mSuggest})[S.menuTab]()}</div>`;
+}
+function mToday(){return `
+  <div class="card"><div class="row1"><span class="nm">Breakfast</span><span class="tm">7:30 – 9:30</span></div>
     <div class="food">Poha, boiled eggs, bread and butter, tea and milk</div></div>
-  <div class="card meal"><div class="row"><span class="name">Lunch</span><span class="time">12:00 – 2:00</span></div>
+  <div class="card"><div class="row1"><span class="nm">Lunch</span><span class="tm">12:00 – 2:00</span></div>
     <div class="food">Rajma, jeera rice, roti, salad, curd</div></div>
-  <div class="card meal"><div class="row"><span class="name">Evening snacks</span><span class="time">5:00 – 7:00</span></div>
+  <div class="card"><div class="row1"><span class="nm">Evening snacks</span><span class="tm">5:00 – 7:00</span></div>
     <div class="food">Samosa, tea</div></div>
-  <div class="card meal"><div class="row"><span class="name">Dinner</span><span class="time">8:00 – 10:00</span></div>
+  <div class="card"><div class="row1"><span class="nm">Dinner</span><span class="tm">8:00 – 10:00</span></div>
     <div class="food">Mixed vegetable, dal tadka, roti, rice, gulab jamun</div></div>
-  <div class="secline"><b>Reserve a special item</b><i></i></div>
-  <p class="sub" style="margin-top:-4px;margin-bottom:11px">Pick what you want and get a token. Register a day ahead.</p>
-  ${SPECIALS.map(s=>spBtn(s)).join("")}</div>`;}
-
-const spBtn=s=>`<button class="sp" data-pick="${s.id}" data-shut="${s.shut?1:0}" ${s.shut?"disabled":""}>
-  <div class="r1"><span class="nm">${esc(s.name)}</span><span class="pr">&#8377;${s.price}</span></div>
-  <div class="r2"><span class="wh">${esc(s.when)}</span>
-    <span class="cl">${s.shut?"Registration closed":"Closes 9 pm today"}</span></div></button>`;
-
-/* ---------------- POLL ---------------- */
-function poll(){return `<div class="page"><h2>Monthly mess poll</h2>
-  <p class="sub">September cycle. Closes 5 September, 11:59 pm.</p><div class="gap"></div>
-  <div class="seg">${[["vote","Menu vote"],["fb","Feedback"],["res","Results"]].map(([k,l])=>
-    `<button data-ptab="${k}" data-on="${S.pollTab===k?1:0}">${l}</button>`).join("")}</div>
-  ${({vote:pVote,fb:pFb,res:pRes})[S.pollTab]()}</div>`;}
-
-function pVote(){
-  const n=votedCount();
-  const head = n===3
-    ? `<div class="recorded"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
-        <div><div class="rt">All three votes are recorded</div>
-        <div class="rd">One dish each for breakfast, lunch and dinner. You can change them until the poll closes.</div></div></div>`
-    : `<div class="progress">Pick one dish for each meal. <b>${n} of 3 recorded.</b> The most-voted dish in each meal is added to next month's menu.</div>`;
-  return head + MEALS.map(m=>{
-    const top=Math.max(...m.items.map(i=>i.n)), done=!!S.picked[m.k];
-    return `<div class="mealhead"><b>${m.label}</b>
-      <span data-done="${done?1:0}">${done?"Voted":"Not voted"}</span></div>
-      ${m.items.map(i=>`
-        <button class="dish" data-meal="${m.k}" data-vote="${i.id}" data-picked="${S.picked[m.k]===i.id?1:0}">
-          <div class="head"><span class="label">${esc(i.label)}</span><span class="count">${i.n}</span></div>
-          <div class="bar"><i style="width:${Math.round(i.n/top*100)}%"></i></div>
-        </button>`).join("")}`;
-  }).join("");
+  <div class="gap"></div><button class="btn" data-mtab="special">Reserve a special item</button>`;}
+function mSpecial(){return `<p class="sub" style="margin-bottom:11px">Pick an item and get a token. Register a day ahead.</p>
+  ${SPECIALS.map(spBtn).join("")}`;}
+function mSuggest(){
+  const left=3-S.suggestions.length;
+  return `<p class="sub" style="margin-bottom:11px">Suggest a dish for next month's poll. Popular suggestions go on the ballot.</p>
+  <div class="quota"><div><b>${S.suggestions.length}/3</b><span>suggestions used</span></div>
+    <div><b>${left}</b><span>you can still add</span></div></div>
+  ${S.suggestions.map(s=>`<div class="card"><div class="row1"><span class="nm">${esc(s.dish)}</span>
+    <span class="pill ${s.st==="In next poll"?"d":"o"}">${s.st}</span></div>
+    <div class="food">${esc(s.meal)}</div></div>`).join("")}
+  ${left>0?`<div class="secline"><b>Add a suggestion</b><i></i></div>
+  <div class="fld"><label for="sdish">Dish name</label>
+    <input class="f" id="sdish" placeholder="e.g. Pav bhaji"></div>
+  <div class="fld"><label for="smeal">Which meal</label>
+    <select id="smeal"><option>Breakfast</option><option>Lunch</option><option>Dinner</option></select></div>
+  <button class="btn" data-sug="1">Submit suggestion</button>`
+  :`<div class="info">You have used all three suggestions for this cycle. They reset when the next poll opens.</div>`}`;
 }
 
+/* ---------- POLL ---------- */
+function poll(){
+  return `<div class="page"><h2>Monthly mess poll</h2>
+    <p class="sub">Open for 7 days · closes 8 September, 11:59 pm</p><div class="gap"></div>
+    <div class="seg">${[["vote","Menu vote"],["fb","Feedback"],["res","Results"]]
+      .map(([k,l])=>`<button data-ptab="${k}" data-on="${S.pollTab===k?1:0}">${l}</button>`).join("")}</div>
+    ${({vote:pVote,fb:pFb,res:pRes})[S.pollTab]()}</div>`;
+}
+function pVote(){
+  const n=voted();
+  const head=n===3
+   ?`<div class="ok"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+      <div><div class="t">All three votes recorded</div>
+      <div class="d">One dish each for breakfast, lunch and dinner. Change them any time in the next 7 days.</div></div></div>`
+   :`<div class="info">Pick one dish for each meal. <b style="color:var(--am)">${n} of 3 recorded.</b> Voting stays open for 7 days so everyone gets a turn.</div>`;
+  return head+MEALS.map(m=>{
+    const top=Math.max(...m.items.map(i=>i.n)),done=!!S.picked[m.k];
+    return `<div class="mh"><b>${m.label}</b><span data-done="${done?1:0}">${done?"Voted":"Not voted"}</span></div>
+      ${m.items.map(i=>`<button class="pk" data-meal="${m.k}" data-vote="${i.id}" data-on="${S.picked[m.k]===i.id?1:0}">
+        <div class="r1"><span class="t1">${esc(i.label)}</span><span class="cnt">${i.n}</span></div>
+        <div class="bar"><i style="width:${Math.round(i.n/top*100)}%"></i></div></button>`).join("")}`;}).join("");
+}
 function pFb(){
-  if(S.fb.submitted) return `
-    <div class="recorded"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
-      <div><div class="rt">Your feedback is recorded</div>
-      <div class="rd">Averages stay sealed until the poll closes, so early ratings cannot sway later ones.</div></div></div>
+  if(S.fb.submitted)return `<div class="ok"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+    <div><div class="t">Feedback recorded</div><div class="d">Averages stay sealed until the poll closes, so early ratings cannot sway later ones.</div></div></div>
     <button class="btn ghost" data-refb="1">Change my rating</button>`;
   const done=CRIT.every(([k])=>S.fb.given[k]);
-  return `<p class="sub" style="margin-bottom:12px">Rate last month's mess. The result goes to the contractor and the Hall Office.</p>
-  ${CRIT.map(([k,name,hint])=>`<div class="crit"><div class="cname">${name}</div><div class="chint">${hint}</div>
-    <div class="scale">${[1,2,3,4,5].map(n=>
-      `<button data-rate="${k}" data-n="${n}" data-on="${S.fb.given[k]===n?1:0}">${n}</button>`).join("")}</div>
-    <div class="scalekey"><span>Poor</span><span>Very good</span></div></div>`).join("")}
+  return `<p class="sub" style="margin-bottom:11px">Rate last month's mess. Results go to the contractor and the Hall Office.</p>
+  ${CRIT.map(([k,nm,h])=>`<div class="card"><div class="nm">${nm}</div><div class="food">${h}</div>
+    <div class="slots" style="grid-template-columns:repeat(5,1fr)">
+    ${[1,2,3,4,5].map(v=>`<button class="slot" data-rate="${k}" data-n="${v}" data-on="${S.fb.given[k]===v?1:0}">${v}</button>`).join("")}
+    </div></div>`).join("")}
   <button class="btn" data-fb="1" ${done?"":"disabled"}>${done?"Submit feedback":"Rate all four to submit"}</button>`;
 }
-
 function pRes(){
-  if(!S.pollClosed) return `
-    <div class="locked">
-      <svg viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>
-      <div class="lt">Results open when the poll closes</div>
-      <div class="ld">Sealed until 5 September, 11:59 pm, so nobody can see the standings and vote strategically.</div>
-      <div class="counter"><div><b>2</b><span>days</span></div><div><b>14</b><span>hours</span></div><div><b>08</b><span>min</span></div></div>
-    </div>
-    <p class="sub" style="margin-top:12px">${S.responses} of 1033 residents have responded so far.</p>
-    <div class="gap"></div>
-    <button class="btn ghost sm" data-close="1">Preview the published result (demo)</button>`;
-  const link="hall14.iitk.ac.in/poll/september";
+  if(!S.pollClosed)return `<div class="info" style="text-align:center;padding:22px 16px">
+    <div style="font-size:14px;font-weight:600;color:var(--tx)">Results open when voting closes</div>
+    <div style="margin-top:6px">Sealed for the full 7 days so nobody can watch the standings and vote strategically.</div>
+    <div class="slots" style="grid-template-columns:repeat(3,1fr);margin-top:13px">
+      <div class="slot" style="cursor:default">5d</div><div class="slot" style="cursor:default">14h</div>
+      <div class="slot" style="cursor:default">08m</div></div></div>
+    <p class="sub">${S.responses} of 1033 residents have voted so far.</p><div class="gap"></div>
+    <button class="btn ghost sm" data-close="1">Preview published result (demo)</button>`;
   return MEALS.map(m=>{
-    const sorted=[...m.items].sort((a,b)=>b.n-a.n), w=sorted[0];
-    const tot=m.items.reduce((a,b)=>a+b.n,0);
+    const s=[...m.items].sort((a,b)=>b.n-a.n),w=s[0],tot=m.items.reduce((a,b)=>a+b.n,0);
     return `<div class="secline"><b>${m.label}</b><i></i></div>
-      <div class="winner"><div class="wl">Added to next month's menu</div>
-        <div class="wn">${esc(w.label)}</div><div class="wv">${w.n} of ${tot} votes</div></div>
-      ${sorted.slice(1).map(i=>`<div class="res"><div class="rtop">
-        <span class="rname">${esc(i.label)}</span><span class="rnum">${i.n}</span></div>
-        <div class="bar"><i style="width:${Math.round(i.n/w.n*100)}%"></i></div></div>`).join("")}`;
-  }).join("") + `
-  <div class="secline"><b>Mess feedback</b><i></i></div>
-  ${CRIT.map(([k,name])=>`<div class="res"><div class="rtop"><span class="rname">${name}</span>
-    <span class="rnum">${S.avg[k].toFixed(1)}</span></div>
+      <div class="card" style="border-color:var(--am)"><div class="food" style="color:var(--am);font-weight:600">Added to the menu</div>
+      <div class="nm" style="font-size:16px;margin-top:2px">${esc(w.label)}</div>
+      <div class="food">${w.n} of ${tot} votes</div></div>
+      ${s.slice(1).map(i=>`<div class="card"><div class="r1"><span class="nm">${esc(i.label)}</span>
+        <span class="cnt">${i.n}</span></div><div class="bar"><i style="width:${Math.round(i.n/w.n*100)}%"></i></div></div>`).join("")}`;
+  }).join("")+`<div class="secline"><b>Mess feedback</b><i></i></div>
+  ${CRIT.map(([k,nm])=>`<div class="card"><div class="r1"><span class="nm">${nm}</span>
+    <span class="p1">${S.avg[k].toFixed(1)}</span></div>
     <div class="bar"><i style="width:${S.avg[k]/5*100}%"></i></div></div>`).join("")}
-  <p class="sub">Final: ${S.responses} of 1033 residents responded. Sent to the mess contractor and the Hall Office.</p>
-  <div class="share"><div class="stitle">Share the result</div>
-    <div class="stext">Published results carry weight only if the hall sees them.</div>
-    <div class="linkrow"><input value="${link}" readonly aria-label="Result link"><button data-copy="1">Copy</button></div>
-    <div class="shrow"><button data-share="WhatsApp">WhatsApp</button><button data-share="hall group">Hall group</button></div></div>
-  <div class="gap"></div>
-  <button class="btn ghost sm" data-reopen="1">Back to the open poll (demo)</button>`;
+  <div class="gap"></div><button class="btn ghost sm" data-reopen="1">Back to open poll (demo)</button>`;
 }
 
-/* ---------------- TOKEN ---------------- */
+/* ---------- CLEANING ---------- */
+function clean(){
+  const wk=S.bookings.length, left=2-wk;
+  const taken=TAKEN[S.cleanDay]||[];
+  const slots=slotList();
+  const morning=slots.filter(m=>m<13*60), evening=slots.filter(m=>m>=15*60);
+  const cell=m=>`<button class="slot" data-slot="${m}" data-on="${S.cleanSlot===m?1:0}"
+    ${taken.includes(m)||left<=0?"disabled":""}>${hhmm(m)}</button>`;
+  return `<div class="page"><h2>Room cleaning</h2>
+  <p class="sub">Book a 15-minute slot. You need to be in the room when the staff arrive.</p><div class="gap"></div>
+  <div class="quota">
+    <div><b>${wk}/2</b><span>booked this week</span></div>
+    <div><b>${left}</b><span>${left===1?"slot left":"slots left"}</span></div>
+    <div><b>15</b><span>minutes per slot</span></div>
+  </div>
+  ${wk?`<div class="secline"><b>Your bookings</b><i></i></div>
+    ${S.bookings.map((b,i)=>`<div class="card"><div class="r1">
+      <span class="nm">${esc(b.dayLabel)} · ${hhmm(b.slot)}</span>
+      <button class="btn ghost sm" style="width:auto;padding:5px 11px;margin:0" data-unbook="${i}">Cancel</button></div>
+      <div class="food">Room ${esc(b.room)}</div></div>`).join("")}`:""}
+  ${left<=0?`<div class="warn">You have used both bookings for this week. The limit exists so every resident gets a turn — it resets on Monday.</div>`
+  :`<div class="secline"><b>New booking</b><i></i></div>
+  <div class="two">
+    <div class="fld"><label for="cb">Block</label><select id="cb">
+      ${BLOCKS.map(b=>`<option ${b===S.cleanBlock?"selected":""}>${b}</option>`).join("")}</select></div>
+    <div class="fld"><label for="cr">Room</label><input class="f" id="cr" value="${esc(S.cleanRoom)}"></div>
+  </div>
+  <div class="fld"><label>Day</label>
+    <div class="days">${DAYS.map(d=>`<button class="day" data-day="${d.n}" data-on="${S.cleanDay===d.n?1:0}">
+      ${d.d}<b>${d.n}</b></button>`).join("")}</div></div>
+  <div class="fld"><label>Morning · 8:30 to 1:00</label>
+    <div class="slots">${morning.map(cell).join("")}</div></div>
+  <div class="brk">1:00 – 3:00 · staff break, no bookings</div>
+  <div class="fld"><label>Afternoon · 3:00 to 6:00</label>
+    <div class="slots">${evening.map(cell).join("")}</div></div>
+  <button class="btn" data-book2="1" ${S.cleanSlot?"":"disabled"}>
+    ${S.cleanSlot?"Book "+hhmm(S.cleanSlot)+" slot":"Pick a slot"}</button>
+  <div class="info" style="margin-top:11px">Crossed-out slots are already taken. Two bookings per resident per week, so the staff can cover every room.</div>`}
+  </div>`;
+}
+
+/* ---------- COMPLAINTS ---------- */
+const CATS={maint:["Lift","Electrical or lighting","Plumbing or leakage","Furniture damage","Water cooler","Internet or WiFi"],
+            clean:["Washroom cleaning","Drain choked","Corridor or stairs","Room cleaning missed","Garbage not collected","Pests or rodents"]};
+function help(){
+  const P={o:["o","Raised"],p:["p","In progress"],d:["d","Resolved"]};
+  const k=S.compTab, list=S.cases[k];
+  return `<div class="page"><h2>Complaints</h2>
+  <p class="sub">Every complaint gets a reference number, a desk and a deadline.</p><div class="gap"></div>
+  <div class="seg">${[["maint","Maintenance"],["clean","Cleanliness"]]
+    .map(([x,l])=>`<button data-ctab="${x}" data-on="${k===x?1:0}">${l}</button>`).join("")}</div>
+  <div class="info">${k==="maint"
+    ?"Lifts, lighting, plumbing, furniture, water coolers and internet. Goes to the Maintenance desk."
+    :"Washrooms, drains, corridors, garbage and pests. Goes to Housekeeping, which is a different team with its own schedule."}</div>
+  ${S.filed?`<div class="ok"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+    <div><div class="t">Logged as ${S.filed}</div><div class="d">48-hour response deadline.</div></div></div>`:""}
+  <div class="fld"><label for="cat">What is it about</label>
+    <select id="cat">${CATS[k].map(c=>`<option>${c}</option>`).join("")}</select></div>
+  <div class="fld"><label for="loc">Where</label>
+    <input class="f" id="loc" placeholder="Block and floor, e.g. C-block, 4th floor"></div>
+  <div class="fld"><label for="det">Details</label>
+    <textarea id="det" placeholder="Describe the problem in a line or two"></textarea></div>
+  <div class="fld"><label>Photo <span class="opt">— optional, speeds up the repair</span></label>
+    ${S.shot?`<div class="shot"><img src="${S.shot}" alt=""><button data-rmshot="1">&times;</button></div>`
+    :`<label class="drop"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.2"/><path d="M8 6l1.4-2h5.2L16 6"/></svg>
+      <div class="t">Add a photo</div><div class="d">Camera or gallery</div>
+      <input type="file" accept="image/*" id="shotin"></label>`}</div>
+  <button class="btn" data-file="1">File complaint</button>
+  <div class="secline"><b>${k==="maint"?"Maintenance":"Cleanliness"} complaints</b><i></i></div>
+  ${list.length?list.map(c=>`<div class="card case"><div class="cr"><span class="ref">${c.ref}</span>
+    <span class="pill ${P[c.st][0]}">${P[c.st][1]}</span></div>
+    <div class="txt">${esc(c.txt)}</div>${c.img?`<img class="thumb" src="${c.img}" alt="">`:""}
+    <div class="meta">${c.desk} · raised ${c.days} day${c.days>1?"s":""} ago · ${c.st==="d"?c.due:"due "+c.due}</div>
+    </div>`).join(""):`<div class="info">Nothing open here.</div>`}</div>`;
+}
+
+/* ---------- NOTICES / PROFILE ---------- */
+function news(){
+  const list=[...NOTICES].sort((a,b)=>(b.pin?1:0)-(a.pin?1:0));
+  const un=NOTICES.filter(x=>!S.readIds.includes(x.id)).length;
+  return `<div class="page"><h2>Notices</h2>
+  <p class="sub">${un?un+" unread. ":""}Minutes, open house dates and anything affecting the hall.</p><div class="gap"></div>
+  ${list.map(x=>{const o=S.openNotice===x.id,r=S.readIds.includes(x.id);
+    return `<button class="nc" data-notice="${x.id}" data-open="${o?1:0}">
+      <div class="nr"><span class="ntag t-${x.type}">${x.tag}</span>
+      ${!r?'<span class="ndot"></span>':''}<span class="ndate">${x.date}</span></div>
+      <div class="ntitle">${esc(x.title)}</div>
+      <div class="nbody" ${o?"":"hidden"}>${esc(x.body)}</div>
+      <div class="nby">${esc(x.by)}${o?"":" · tap to read"}</div></button>`;}).join("")}</div>`;
+}
+function me(){
+  const open=[...S.cases.maint,...S.cases.clean].filter(c=>c.st!=="d").length;
+  return `<div class="page">
+  <div class="ph"><div class="pav">UT</div><div><div class="n2">${esc(ME.name)}</div>
+    <div class="r2">${esc(ME.roll)}</div></div></div>
+  <div class="quota"><div><b>${voted()}/3</b><span>menu votes</span></div>
+    <div><b>${S.bookings.length}/2</b><span>cleaning booked</span></div>
+    <div><b>${open}</b><span>open issues</span></div></div>
+  <div class="secline"><b>Hall</b><i></i></div>
+  <div class="rows"><div class="r"><span>Room</span><b class="m">${esc(ME.room)}</b></div>
+    <div class="r"><span>Location</span><b>${esc(ME.block)} block, ${esc(ME.floor)}</b></div>
+    <div class="r"><span>Resident since</span><b>${esc(ME.joined)}</b></div>
+    <div class="r"><span>Mess preference</span><b>${esc(ME.mess)}</b></div></div>
+  <div class="secline"><b>Academic</b><i></i></div>
+  <div class="rows"><div class="r"><span>Programme</span><b>${esc(ME.prog)}</b></div>
+    <div class="r"><span>Department</span><b>${esc(ME.dept)}</b></div>
+    <div class="r"><span>Institute email</span><b>${esc(ME.email)}</b></div></div>
+  <div class="gap"></div><button class="btn ghost" data-out="1">Sign out</button></div>`;
+}
+
+/* ---------- TOKEN ---------- */
 function token(){
-  if(S.booked){
-    const t=S.booked,dead=t.status==="used";
+  if(S.booked){const t=S.booked,dead=t.status==="used";
     return `<div class="page"><h2>${dead?"Token used":"Your collection token"}</h2>
-    <p class="sub">${dead?"This token is void and cannot be used again.":"Show this at the counter. It works once."}</p>
-    <div class="gap"></div>
-    <div class="token" data-void="${dead?1:0}">${dead?'<div class="stamp">USED</div>':''}
-      <div class="k">${esc(t.when)} &nbsp;·&nbsp; Mess, gate 2</div>
-      <div class="item">${esc(t.item)} &times; ${t.qty}</div>
-      <div class="code">${esc(t.code)}</div><div class="codelab">Token number</div>
-      <div class="qrbox">${qrSVG(payload(t),132)}</div>
+    <p class="sub">${dead?"Void — it cannot be used again.":"Show this at the counter. It works once."}</p><div class="gap"></div>
+    <div class="tok" data-void="${dead?1:0}">${dead?'<div class="stamp">USED</div>':''}
+      <div class="k">${esc(t.when)} · Mess, gate 2</div>
+      <div class="i">${esc(t.item)} × ${t.qty}</div>
+      <div class="c">${esc(t.code)}</div><div class="cl">Token number</div>
+      <div class="qrbox">${qrSVG(payload(t),128)}</div>
       <div class="strip"><div><span>Roll number</span><b class="m">${esc(t.roll)}</b></div>
-        <div style="text-align:right"><span>${dead?"Collected":"Amount"}</span>
-        <b class="m">${dead?esc(t.at):"&#8377;"+t.price*t.qty}</b></div></div></div>
-    ${dead?`<div class="voidline">Scanned at the counter at ${esc(t.at)}. One token, one plate — a used number cannot be shown again, and another plate needs a fresh reservation.</div>
+      <div style="text-align:right"><span>${dead?"Collected":"Amount"}</span>
+      <b class="m">${dead?esc(t.at):"&#8377;"+t.price*t.qty}</b></div></div></div>
+    ${dead?`<div class="warn" style="margin-top:11px">Scanned at ${esc(t.at)}. One token, one plate — another plate needs a fresh reservation.</div>
       <div class="gap"></div><button class="btn" data-again="1">Reserve something else</button>`
-     :`<p class="showline">The counter scans this QR. It carries roll number, token, item and quantity as plain text, so the existing mess scanner can log it straight into the sheet — and the token goes void the moment it is scanned.</p>
-      <div class="gap"></div><button class="btn scan" data-scan="1">Scan at counter (demo)</button>
-      <button class="btn ghost" data-cancel="1">Cancel reservation</button>`}</div>`;
-  }
-  if(!S.chosen) return `<div class="page"><h2>Reserve a special item</h2>
-    <p class="sub">Choose what you want. Registration closes at 9 pm the day before.</p><div class="gap"></div>
-    ${SPECIALS.map(s=>spBtn(s)).join("")}
-    <div class="compare">
-      <div class="now"><b>Now:</b> write your name and a serial number on a sheet, remember the number, then wait while a volunteer finds it and strikes it off.</div>
-      <div class="then"><b>With the portal:</b> pick an item, get a token number. It is scanned once at the counter and goes void, so no one collects twice.</div>
-    </div></div>`;
+    :`<p class="sub" style="margin-top:11px">The counter scans this QR. It carries roll number, token, item and quantity as plain text, so the existing mess scanner logs it straight into the sheet — and the token goes void the moment it is scanned.</p>
+      <div class="gap"></div><button class="btn gr" data-scan="1">Scan at counter (demo)</button>
+      <button class="btn ghost" data-cancel="1">Cancel reservation</button>`}</div>`;}
+  if(!S.chosen)return `<div class="page"><h2>Reserve a special item</h2>
+    <p class="sub">Choose what you want. Registration closes 9 pm the day before.</p><div class="gap"></div>
+    ${SPECIALS.map(spBtn).join("")}
+    <div class="info" style="margin-top:6px">Today you write your name and a serial number on a sheet, then wait while a volunteer finds it. With a token you show a QR, it is scanned once and goes void.</div></div>`;
   const c=SPECIALS.find(s=>s.id===S.chosen);
-  return `<div class="page"><h2>Confirm your reservation</h2>
-    <p class="sub">Check the details, then get your token.</p><div class="gap"></div>
-    <div class="pickbar"><div class="pl">Selected</div><div class="pn">${esc(c.name)}</div>
-      <div class="pw">${esc(c.when)} &nbsp;·&nbsp; &#8377;${c.price} per plate</div></div>
-    <div class="qty"><button data-q="-1" aria-label="Reduce quantity">&minus;</button>
-      <span class="n">${S.qty}</span><button data-q="1" aria-label="Increase quantity">+</button>
-      <span class="lab">plate${S.qty>1?"s":""} &nbsp;·&nbsp; &#8377;${c.price*S.qty} total</span></div>
+  return `<div class="page"><h2>Confirm reservation</h2><p class="sub">Check the details, then get your token.</p><div class="gap"></div>
+    <div class="card" style="border-color:var(--am)"><div class="food" style="color:var(--am);font-weight:600">Selected</div>
+      <div class="nm" style="font-size:16px;margin-top:2px">${esc(c.name)}</div>
+      <div class="food">${esc(c.when)} · &#8377;${c.price} per plate</div></div>
+    <div class="qty"><button data-q="-1">−</button><span class="n">${S.qty}</span>
+      <button data-q="1">+</button><span class="l">plate${S.qty>1?"s":""} · &#8377;${c.price*S.qty} total</span></div>
     <div class="gap"></div><button class="btn" data-book="1">Reserve and get token</button>
     <button class="btn ghost" data-unpick="1">Choose a different item</button></div>`;
 }
 
-/* ---------------- PROFILE ---------------- */
-function me(){
-  const open=S.cases.filter(c=>c.st!=="done").length;
-  return `<div class="page">
-  <div class="phead"><div class="pav">UT</div>
-    <div><div class="pn2">${esc(ME.name)}</div><div class="pr2">${esc(ME.roll)}</div></div></div>
-  <div class="stat">
-    <div><b>${votedCount()}/3</b><span>menu votes this cycle</span></div>
-    <div><b>${S.cases.length}</b><span>complaints filed</span></div>
-    <div><b>${open}</b><span>still open</span></div>
-  </div>
-  <div class="secline"><b>Hall</b><i></i></div>
-  <div class="rows">
-    <div class="r"><span>Room</span><b class="m">${esc(ME.room)}</b></div>
-    <div class="r"><span>Location</span><b>${esc(ME.block)}</b></div>
-    <div class="r"><span>Resident since</span><b>${esc(ME.joined)}</b></div>
-    <div class="r"><span>Mess preference</span><b>${esc(ME.mess)}</b></div>
-  </div>
-  <div class="secline"><b>Academic</b><i></i></div>
-  <div class="rows">
-    <div class="r"><span>Programme</span><b>${esc(ME.prog)}</b></div>
-    <div class="r"><span>Department</span><b>${esc(ME.dept)}</b></div>
-    <div class="r"><span>Roll number</span><b class="m">${esc(ME.roll)}</b></div>
-  </div>
-  <div class="secline"><b>Contact</b><i></i></div>
-  <div class="rows">
-    <div class="r"><span>Institute email</span><b>${esc(ME.email)}</b></div>
-    <div class="r"><span>Phone</span><b class="m">${esc(ME.phone)}</b></div>
-  </div>
-  <p class="sub">Details come from the institute record. Raise a request at the Hall Office to correct anything here.</p>
-  <div class="gap"></div>
-  <button class="btn red" data-out="1">Sign out</button></div>`;
-}
-
-/* ---------------- COMPLAINTS ---------------- */
-function help(){
-  const P={open:["open","Raised"],prog:["prog","In progress"],done:["done","Resolved"]};
-  return `<div class="page"><h2>Complaints</h2>
-  <p class="sub">Every complaint gets a reference number, a deadline and a status you can check.</p><div class="gap"></div>
-  ${S.filed?`<div class="done-note">Logged as <span class="ref">${S.filed}</span>. Sent to the Maintenance desk with a 48-hour response deadline.</div>`:""}
-  <div class="field"><label for="cat">What is it about</label>
-    <select id="cat"><option>Washroom or drainage</option><option>Lift</option><option>Water cooler</option>
-    <option>Electrical or lighting</option><option>Mess</option><option>Pest or cleanliness</option></select></div>
-  <div class="field"><label for="loc">Where</label>
-    <input class="f" id="loc" placeholder="Block and floor, e.g. C-block, 3rd floor"></div>
-  <div class="field"><label for="det">Details</label>
-    <textarea id="det" placeholder="Describe the problem in a line or two"></textarea></div>
-  <div class="field"><label>Photo <span class="opt">— optional, but it speeds up the repair</span></label>
-    ${S.shot?`<div class="shot"><img src="${S.shot}" alt="Attached photo">
-      <button data-rmshot="1" aria-label="Remove photo">&times;</button></div>`
-     :`<label class="drop"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="14" rx="2"/>
-        <circle cx="12" cy="13" r="3.2"/><path d="M8 6l1.4-2h5.2L16 6"/></svg>
-        <div class="dt">Add a photo</div><div class="dd">Camera or gallery</div>
-        <input type="file" accept="image/*" id="shotin"></label>`}</div>
-  <button class="btn" data-file="1">File complaint</button>
-  <div class="gap"></div><h2 style="font-size:15px">Your complaints</h2><div class="gap" style="height:9px"></div>
-  ${S.cases.map(c=>`<div class="case">
-    <div class="top-row"><span class="ref">${c.ref}</span><span class="pill ${P[c.st][0]}">${P[c.st][1]}</span></div>
-    <div class="txt">${esc(c.txt)}</div>
-    ${c.img?`<img class="thumb" src="${c.img}" alt="Complaint photo">`:""}
-    <div class="meta">${c.desk} desk &nbsp;·&nbsp; raised ${c.days} day${c.days>1?"s":""} ago &nbsp;·&nbsp; ${c.st==="done"?c.due:"due "+c.due}</div>
-  </div>`).join("")}</div>`;
-}
-
-function news(){
-  const T={meeting:["nt-meet"],minutes:["nt-min"],maint:["nt-maint"],mess:["nt-mess"],result:["nt-res"]};
-  const list=[...NOTICES].sort((a,b)=>(b.pin?1:0)-(a.pin?1:0));
-  const unread=NOTICES.filter(x=>!S.readIds.includes(x.id)).length;
-  return `<div class="page">
-  <h2>Notices</h2>
-  <p class="sub">${unread?unread+" unread. ":""}Committee minutes, open house dates and anything that affects the hall.</p>
-  <div class="gap"></div>
-  ${list.map(x=>{
-    const open=S.openNotice===x.id, read=S.readIds.includes(x.id);
-    return `<button class="nc" data-notice="${x.id}" data-open="${open?1:0}">
-      <div class="nrow">
-        <span class="ntag ${T[x.type][0]}">${x.tag}</span>
-        ${x.pin?'<span class="npin">Pinned</span>':''}
-        ${!read?'<span class="ndot" aria-label="unread"></span>':''}
-        <span class="ndate">${x.date}</span>
-      </div>
-      <div class="ntitle">${esc(x.title)}</div>
-      <div class="nbody" ${open?'':'hidden'}>${esc(x.body)}</div>
-      <div class="nby">${esc(x.by)}${open?"":" &nbsp;·&nbsp; tap to read"}</div>
-    </button>`;}).join("")}
-  <p class="sub" style="margin-top:12px">Every notice stays here permanently, so nothing depends on catching a message in a group.</p>
-  </div>`;
-}
-
-const VIEW={menu,poll,token,news,help,me};
+const VIEW={menu,poll,token,clean,help,news,me};
 function draw(){
   el("screen").innerHTML=VIEW[S.tab]();
-  el("nav").innerHTML=BOTTOM.map(id=>`
-    <button data-tab="${id}" data-on="${S.tab===id?1:0}" aria-label="${SHORT[id]}">
-      <svg viewBox="0 0 24 24"><path d="${ICON[id]}"/></svg>${SHORT[id]}</button>`).join("");
-  el("ditems").innerHTML=PAGES.map(p=>`
-    <button data-tab="${p.id}" data-on="${S.tab===p.id?1:0}">
-      <svg viewBox="0 0 24 24"><path d="${ICON[p.id]}"/></svg>${p.label}
-      ${p.id==="poll"&&votedCount()<3?'<span class="tag">open</span>':''}${p.id==="news"&&NOTICES.some(x=>!S.readIds.includes(x.id))?'<span class="tag">'+NOTICES.filter(x=>!S.readIds.includes(x.id)).length+'</span>':''}</button>`).join("");
+  el("nav").innerHTML=BOTTOM.map(id=>`<button data-tab="${id}" data-on="${S.tab===id?1:0}">
+    <svg viewBox="0 0 24 24"><path d="${ICON[id]}"/></svg>${SHORT[id]}</button>`).join("");
+  el("ditems").innerHTML=PAGES.map(p=>`<button data-tab="${p.id}" data-on="${S.tab===p.id?1:0}">
+    <svg viewBox="0 0 24 24"><path d="${ICON[p.id]}"/></svg>${p.l}
+    ${p.id==="news"&&NOTICES.some(x=>!S.readIds.includes(x.id))
+      ?'<span class="tag">'+NOTICES.filter(x=>!S.readIds.includes(x.id)).length+'</span>':''}</button>`).join("");
   el("drawer").dataset.open=S.drawer?1:0;
   el("scrim").dataset.open=S.drawer?1:0;
   const fi=el("shotin");
-  if(fi) fi.addEventListener("change",e=>{const f=e.target.files[0];if(!f)return;
+  if(fi)fi.addEventListener("change",e=>{const f=e.target.files[0];if(!f)return;
     const r=new FileReader();r.onload=()=>{S.shot=r.result;toast("Photo attached");draw();};r.readAsDataURL(f);});
+  const cb=el("cb"),cr=el("cr");
+  if(cb)cb.addEventListener("change",e=>{S.cleanBlock=e.target.value;});
+  if(cr)cr.addEventListener("input",e=>{S.cleanRoom=e.target.value;});
 }
 
-let LMODE="signin";
+/* ---------- login ---------- */
+let LM="signin";
 function drawLogin(){
   const b=el("lbody");
-  if(LMODE==="signin"){
-    b.innerHTML=`<h1>Hall 14 Portal</h1>
-      <div class="tag">Mess, maintenance and hall services, in one place.</div>
-      <div class="lform">
-        <div class="lf"><label for="lroll">Roll number</label>
-          <input class="mono" id="lroll" value="261110071" inputmode="numeric" autocomplete="off"></div>
-        <div class="lf"><label for="lpw">Password</label>
-          <input type="password" id="lpw" value="••••••••" autocomplete="off"></div>
-        <button class="lbtn" data-signin="1">Sign in</button>
-      </div>
-      <div class="lswap">First time here? <button data-mode="register">Create an account</button></div>
-      <div class="lnote">Your password is the one you set when you register. Nothing is shared with the mess or the Hall Office.</div>`;
-  } else if(LMODE==="register"){
-    b.innerHTML=`<button class="lback" data-mode="signin">&larr; Back to sign in</button>
-      <h1 style="margin-top:14px">Create your account</h1>
-      <div class="tag">One account per resident, verified against your institute email.</div>
-      <div class="lform">
-        <div class="lf"><label for="rroll">Roll number</label>
-          <input class="mono" id="rroll" value="261110071" inputmode="numeric" autocomplete="off"></div>
-        <div class="lf"><label for="rname">Full name</label>
-          <input id="rname" value="Umesh Tupdale" autocomplete="off"></div>
-        <div class="lf"><label for="rroom">Room number</label>
-          <input id="rroom" value="C-402" autocomplete="off"></div>
-        <div class="lf"><label for="rpw">Set a password</label>
-          <input type="password" id="rpw" value="••••••••" autocomplete="off"></div>
-        <button class="lbtn" data-toOtp="1">Send verification code</button>
-      </div>
-      <div class="lnote">A six-digit code goes to umesht26@iitk.ac.in. Only a resident with an institute email can register, so nobody can create an account for someone else.</div>`;
-  } else {
-    b.innerHTML=`<button class="lback" data-mode="register">&larr; Back</button>
-      <h1 style="margin-top:14px">Check your email</h1>
-      <div class="tag">We sent a six-digit code to umesht26@iitk.ac.in.</div>
-      <div class="lform">
-        <div class="lf"><label>Verification code</label>
-          <div class="otp">
-            <input class="mono" value="2" maxlength="1" inputmode="numeric" aria-label="digit 1">
-            <input class="mono" value="0" maxlength="1" inputmode="numeric" aria-label="digit 2">
-            <input class="mono" value="4" maxlength="1" inputmode="numeric" aria-label="digit 3">
-            <input class="mono" value="8" maxlength="1" inputmode="numeric" aria-label="digit 4">
-            <input class="mono" value="1" maxlength="1" inputmode="numeric" aria-label="digit 5">
-            <input class="mono" value="5" maxlength="1" inputmode="numeric" aria-label="digit 6">
-          </div>
-          <div class="lhint">Code expires in 9:42. Didn't get it? Check spam, or resend.</div>
-        </div>
-        <button class="lbtn" data-signin="1">Verify and continue</button>
-      </div>
-      <div class="lnote">After this you sign in with your roll number and password. Registration happens once.</div>`;
-  }
+  if(LM==="signin")b.innerHTML=`<h1>Hall 14 Portal</h1>
+    <div class="tag">Mess, cleaning and hall services, in one place.</div>
+    <div class="lform"><div class="lf"><label for="lr">Roll number</label>
+      <input class="m" id="lr" value="261110071"></div>
+      <div class="lf"><label for="lp">Password</label><input type="password" id="lp" value="••••••••"></div>
+      <button class="lbtn" data-in="1">Sign in</button></div>
+    <div class="lswap">First time here? <button data-lm="reg">Create an account</button></div>
+    <div class="lnote">Signs in with your institute roll number. Nothing is shared with the mess or the Hall Office.</div>`;
+  else if(LM==="reg")b.innerHTML=`<button class="lback" data-lm="signin">← Back to sign in</button>
+    <h1 style="margin-top:12px">Create your account</h1>
+    <div class="tag">One account per resident, verified by institute email.</div>
+    <div class="lform"><div class="lf"><label for="rr">Roll number</label><input class="m" id="rr" value="261110071"></div>
+      <div class="lf"><label for="rn">Full name</label><input id="rn" value="Umesh Tupdale"></div>
+      <div class="lf"><label for="ro">Room number</label><input id="ro" value="C-402"></div>
+      <div class="lf"><label for="rp">Set a password</label><input type="password" id="rp" value="••••••••"></div>
+      <button class="lbtn" data-lm="otp">Send verification code</button></div>
+    <div class="lnote">A six-digit code goes to umesht26@iitk.ac.in, so nobody can register in your name.</div>`;
+  else b.innerHTML=`<button class="lback" data-lm="reg">← Back</button>
+    <h1 style="margin-top:12px">Check your email</h1>
+    <div class="tag">Six-digit code sent to umesht26@iitk.ac.in.</div>
+    <div class="lform"><div class="lf"><label>Verification code</label>
+      <div class="otp">${[2,0,4,8,1,5].map(d=>`<input class="m" value="${d}" maxlength="1">`).join("")}</div></div>
+      <button class="lbtn" data-in="1">Verify and continue</button></div>
+    <div class="lnote">After this you sign in with roll number and password. Registration happens once.</div>`;
 }
-function enterApp(){
-  el("login").dataset.out="1";
-  setTimeout(()=>{el("login").style.display="none";toast("Signed in");},340);
-}
-document.addEventListener("click",e=>{
-  const t=e.target.closest("button"); if(!t) return;
-  if(t.dataset.mode){LMODE=t.dataset.mode;return drawLogin();}
-  if(t.dataset.toOtp){LMODE="otp";return drawLogin();}
-  if(t.dataset.signin){return enterApp();}
-});
-drawLogin();
-
-const _unused=(()=>{
-})();
 el("burger").addEventListener("click",()=>{S.drawer=!S.drawer;draw();});
-el("avatar").addEventListener("click",()=>{S.tab="me";S.drawer=false;el("screen").scrollTop=0;draw();});
+el("avatar").addEventListener("click",()=>{S.tab="me";S.drawer=false;draw();});
 el("scrim").addEventListener("click",()=>{S.drawer=false;draw();});
-document.addEventListener("keydown",e=>{if(e.key==="Escape"&&S.drawer){S.drawer=false;draw();}});
 
 document.addEventListener("click",e=>{
-  const t=e.target.closest("button"); if(!t||t.disabled) return;
-  const d=t.dataset, top=()=>el("screen").scrollTop=0;
+  const t=e.target.closest("button");if(!t||t.disabled)return;
+  const d=t.dataset,top=()=>el("screen").scrollTop=0;
 
-  if(d.out){ LMODE="signin"; drawLogin();
-    el("login").style.display="flex";
-    requestAnimationFrame(()=>el("login").dataset.out="0");
-    S.tab="menu"; draw(); return; }
+  if(d.lm){LM=d.lm;return drawLogin();}
+  if(d.in){el("login").dataset.out="1";
+    setTimeout(()=>{el("login").style.display="none";toast("Signed in");},340);return;}
+  if(d.out){LM="signin";drawLogin();el("login").style.display="flex";
+    requestAnimationFrame(()=>el("login").dataset.out="0");S.tab="menu";return draw();}
 
   if(d.tab){S.tab=d.tab;S.drawer=false;top();return draw();}
+  if(d.mtab){S.menuTab=d.mtab;S.tab="menu";top();return draw();}
   if(d.ptab){S.pollTab=d.ptab;top();return draw();}
-  if(d.notice){const id=+d.notice;
-    S.openNotice = S.openNotice===id ? null : id;
-    if(!S.readIds.includes(id))S.readIds.push(id);
-    return draw();}
+  if(d.ctab){S.compTab=d.ctab;S.filed=null;top();return draw();}
+  if(d.notice){const id=+d.notice;S.openNotice=S.openNotice===id?null:id;
+    if(!S.readIds.includes(id))S.readIds.push(id);return draw();}
+
   if(d.pick){S.chosen=+d.pick;S.qty=1;S.tab="token";top();return draw();}
   if(d.unpick){S.chosen=null;return draw();}
   if(d.q){S.qty=Math.min(3,Math.max(1,S.qty+(+d.q)));return draw();}
   if(d.book){const c=SPECIALS.find(s=>s.id===S.chosen);
     S.booked={item:c.name,when:c.when,price:c.price,qty:S.qty,code:code(),status:"valid",roll:ME.roll};
     top();toast("Token issued");return draw();}
-  if(d.scan){S.booked.status="used";S.booked.at="8:42 pm";top();toast("Scanned — token is now void");return draw();}
-  if(d.cancel){S.booked=null;S.chosen=null;S.qty=1;toast("Reservation cancelled");return draw();}
-  if(d.again){S.booked=null;S.chosen=null;S.qty=1;return draw();}
+  if(d.scan){S.booked.status="used";S.booked.at="8:42 pm";top();toast("Scanned — token is void");return draw();}
+  if(d.cancel||d.again){S.booked=null;S.chosen=null;S.qty=1;return draw();}
 
-  if(d.vote){
-    const mk=d.meal, id=+d.vote, m=MEALS.find(x=>x.k===mk);
-    if(S.picked[mk]===id) return;
-    if(S.picked[mk]) m.items.find(i=>i.id===S.picked[mk]).n--;
-    m.items.find(i=>i.id===id).n++; S.picked[mk]=id;
-    toast(m.label+" vote recorded"); return draw();
-  }
+  if(d.vote){const mk=d.meal,id=+d.vote,m=MEALS.find(x=>x.k===mk);
+    if(S.picked[mk]===id)return;
+    if(S.picked[mk])m.items.find(i=>i.id===S.picked[mk]).n--;
+    m.items.find(i=>i.id===id).n++;S.picked[mk]=id;toast(m.label+" vote recorded");return draw();}
   if(d.rate){S.fb.given[d.rate]=+d.n;return draw();}
   if(d.fb){CRIT.forEach(([k])=>{const g=S.fb.given[k],r=S.responses;
       S.avg[k]=+(((S.avg[k]*r)+g)/(r+1)).toFixed(2);});
@@ -1025,20 +871,30 @@ document.addEventListener("click",e=>{
   if(d.refb){S.fb.submitted=false;return draw();}
   if(d.close){S.pollClosed=true;top();return draw();}
   if(d.reopen){S.pollClosed=false;top();return draw();}
-  if(d.copy){toast("Link copied");return;}
-  if(d.share){toast("Shared to "+d.share);return;}
-  if(d.rmshot){S.shot=null;return draw();}
 
-  if(d.file){
-    const loc=el("loc").value.trim(), det=el("det").value.trim();
+  if(d.sug){const dish=el("sdish").value.trim();
+    if(!dish){el("sdish").focus();return;}
+    S.suggestions.push({id:S.sugSeq++,dish,meal:el("smeal").value,st:"Under review"});
+    toast("Suggestion submitted");return draw();}
+
+  if(d.day){S.cleanDay=+d.day;S.cleanSlot=null;return draw();}
+  if(d.slot){S.cleanSlot=+d.slot;return draw();}
+  if(d.book2){const dd=DAYS.find(x=>x.n===S.cleanDay);
+    S.bookings.push({day:S.cleanDay,dayLabel:dd.d+" "+dd.n+" Sep",slot:S.cleanSlot,room:S.cleanBlock+"-"+S.cleanRoom.replace(/^[A-G]-/,"")});
+    S.cleanSlot=null;top();toast("Cleaning slot booked");return draw();}
+  if(d.unbook){S.bookings.splice(+d.unbook,1);toast("Booking cancelled");return draw();}
+
+  if(d.rmshot){S.shot=null;return draw();}
+  if(d.file){const loc=el("loc").value.trim(),det=el("det").value.trim();
     if(!loc||!det){(loc?el("det"):el("loc")).focus();return;}
-    const ref="H14-0"+(S.seq++);
-    S.cases.unshift({ref,txt:det.slice(0,64),desk:"Maintenance",days:1,st:"open",due:"4 Sep",img:S.shot});
-    S.filed=ref;S.shot=null;top();toast("Complaint filed");return draw();
-  }
+    const k=S.compTab,pre=k==="maint"?"M":"C";
+    const ref="H14-"+pre+"0"+(S.seq[k]++);
+    S.cases[k].unshift({ref,txt:det.slice(0,64),desk:k==="maint"?"Maintenance":"Housekeeping",
+      days:1,st:"o",due:"5 Sep",img:S.shot});
+    S.filed=ref;S.shot=null;top();toast("Complaint filed");return draw();}
 });
 
-draw();
+drawLogin();draw();
 </script>
 </body>
 </html>
