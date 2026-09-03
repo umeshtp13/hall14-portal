@@ -1,4 +1,4 @@
-@'
+﻿@'
 const CACHE = "hall14-v2";
 const FILES = ["/", "/index.html", "/manifest.json", "/icon-192.png", "/icon-512.png"];
 
